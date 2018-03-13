@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "413291385602",
+    "firebase_url": "https://ussuapp.firebaseio.com",
+    "project_id": "ussuapp",
+    "storage_bucket": "ussuapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413291385602:android:a784fa5e7c1d3df1",
+        "android_client_info": {
+          "package_name": "com.example.liamkenny.com2027Group18"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413291385602-i605fr7a5oe5k3hak3c8o3t9u8pr86ct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDGpwq12xXAnFPuws2br4_bcmDGikmsZg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413291385602:android:b530dd66927f2787",
+        "android_client_info": {
+          "package_name": "com.example.liamkenny.unionapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413291385602-i605fr7a5oe5k3hak3c8o3t9u8pr86ct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDGpwq12xXAnFPuws2br4_bcmDGikmsZg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
