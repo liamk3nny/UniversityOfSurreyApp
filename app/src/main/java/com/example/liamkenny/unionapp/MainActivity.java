@@ -15,6 +15,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private RecyclerView eventRecyclerView;
+    private LinearLayoutManager eventLLManager = new LinearLayoutManager(this);
 
 
 
@@ -49,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = firebaseAuth.getCurrentUser();
-
 
     }
 
@@ -68,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         //Setting up adapter
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        //Setting up recycler view for Events fragment.
+        eventRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
+        eventRecyclerView.setHasFixedSize(true);
 
 
 
@@ -90,12 +97,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //TODO: prevent refresh of home page when clicking home and already at home page
     public void selectDrawerItem(MenuItem item){
 
         Fragment fragment = null;
         Class fragmentClass = null;
-        boolean signout = false;
+        String activity = null;
         switch(item.getItemId()){
+            case R.id.home:
+                activity = "home";
+                break;
+
             case R.id.shop:
                 break;
 
@@ -126,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.signout:
-                signout = true;
+                activity = "signout";
                 break;
 
 
@@ -149,12 +161,13 @@ public class MainActivity extends AppCompatActivity {
             //
 
             Toast.makeText(this, "Switching Fragment.", Toast.LENGTH_SHORT).show();
-        }else if(signout){
+        }else if(activity == "signout"){
             signOut();
         }
         drawerLayout.closeDrawers();
     }
 
+    //TODO: add 'are you sure?' message.
     private void signOut(){
         firebaseAuth.signOut();
         Toast.makeText(this, "Signing out.", Toast.LENGTH_SHORT).show();
@@ -176,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //TODO: close fragment and return to home page instead of closing app on main activity fragments.
     @Override
     public void onBackPressed() {
         if(this.drawerLayout.isDrawerOpen(GravityCompat.START)){
