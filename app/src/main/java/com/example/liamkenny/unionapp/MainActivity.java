@@ -5,10 +5,12 @@ import android.media.Image;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView name;
     private TextView email;
 
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+
 
 
 
@@ -51,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
         name = (TextView)findViewById(R.id.user_name);
         email = (TextView)findViewById(R.id.user_email);
 
+        tabLayout = (TabLayout)findViewById(R.id.home_tab_layout);
+        viewPager = (ViewPager)findViewById(R.id.home_page_viewer);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        //Adding Fragments to the tabs
+        adapter.addFragment(new UpcomingEventsFragment(), "Upcoming Events");
+        adapter.addFragment(new NewsFragment(), "News");
+
+        //Setting up adapter
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
 
 
 
