@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">UnionApp</string>
 
+    <string name="home">Home</string>
+    <string name="login">Login</string>
+
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="pwd">Password</string>
+    <string name="pwd1">Confirm Password</string>
+    <string name="reg">Register</string>
+    <string name="reg1">Register?</string>
+    <string name="to_login">Already have an account?</string>
+
 
     <!--
         Draw item labels

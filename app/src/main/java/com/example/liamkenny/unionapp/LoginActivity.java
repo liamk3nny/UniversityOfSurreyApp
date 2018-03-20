@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupView(){
-        mURN = (EditText) findViewById(R.id.etURN);
+        mURN = (EditText) findViewById(R.id.etUsername);
         mPassword = (EditText)findViewById(R.id.etPassword);
         mLogin = (Button)findViewById(R.id.btnLogin);
         mRegister = (TextView)findViewById(R.id.tvRegister);
