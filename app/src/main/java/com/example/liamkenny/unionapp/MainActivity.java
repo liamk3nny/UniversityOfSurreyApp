@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -156,17 +157,22 @@ public class MainActivity extends AppCompatActivity {
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_layout,fragment).commit();
+            //fragmentManager.beginTransaction().replace(R.id.fragment_layout,fragment).commit();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-            item.setChecked(false);
-            //
+            fragmentTransaction.add(R.id.fragment_layout, fragment);
+            fragmentTransaction.addToBackStack(fragment.toString());
+            fragmentTransaction.commit();
+            item.setChecked(true);
+
 
             Toast.makeText(this, "Switching Fragment.", Toast.LENGTH_SHORT).show();
         }else if(activity == "signout"){
             confSignout();
         }else if(activity == "home"){
-            Intent homeIntent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(homeIntent);
+            //Intent homeIntent = new Intent(MainActivity.this, MainActivity.class);
+            //startActivity(homeIntent);
+
         }
         drawerLayout.closeDrawers();
     }
@@ -197,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(this.drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawers();
-        }else{
+        }else if(getSupportFragmentManager().getBackStackEntryCount() != 1){
             if (doubleBackPress) {
                 super.onBackPressed();
                 return;
@@ -214,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);
 
+        }else{
+            super.onBackPressed();
         }
 
     }
