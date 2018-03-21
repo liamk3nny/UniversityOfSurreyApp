@@ -2,8 +2,10 @@ package com.example.liamkenny.unionapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView mRegister;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+
+    private boolean doubleBackPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,5 +108,27 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackPress) {
+                super.onBackPressed();
+                return;
+        }
+
+        this.doubleBackPress = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackPress=false;
+            }
+        }, 2000);
+
+
+
     }
 }

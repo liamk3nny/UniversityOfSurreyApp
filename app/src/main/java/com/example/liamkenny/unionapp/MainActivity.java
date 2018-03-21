@@ -3,6 +3,7 @@ package com.example.liamkenny.unionapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    private boolean doubleBackPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +198,22 @@ public class MainActivity extends AppCompatActivity {
         if(this.drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawers();
         }else{
-            super.onBackPressed();
+            if (doubleBackPress) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackPress = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackPress=false;
+                }
+            }, 2000);
+
         }
 
     }
