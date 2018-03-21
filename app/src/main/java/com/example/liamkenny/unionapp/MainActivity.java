@@ -1,5 +1,6 @@
 package com.example.liamkenny.unionapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.provider.ContactsContract;
@@ -13,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private RecyclerView eventRecyclerView;
+
     private LinearLayoutManager eventLLManager = new LinearLayoutManager(this);
 
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = firebaseAuth.getCurrentUser();
+
 
     }
 
@@ -72,9 +75,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        //Setting up recycler view for Events fragment.
-        eventRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
-        eventRecyclerView.setHasFixedSize(true);
+
 
 
 
@@ -97,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO: prevent refresh of home page when clicking home and already at home page
     public void selectDrawerItem(MenuItem item){
 
         Fragment fragment = null;
@@ -162,12 +162,14 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Switching Fragment.", Toast.LENGTH_SHORT).show();
         }else if(activity == "signout"){
-            signOut();
+            confSignout();
+        }else if(activity == "home"){
+            Intent homeIntent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(homeIntent);
         }
         drawerLayout.closeDrawers();
     }
 
-    //TODO: add 'are you sure?' message.
     private void signOut(){
         firebaseAuth.signOut();
         Toast.makeText(this, "Signing out.", Toast.LENGTH_SHORT).show();
@@ -189,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //TODO: close fragment and return to home page instead of closing app on main activity fragments.
+    
     @Override
     public void onBackPressed() {
         if(this.drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -198,6 +200,31 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
 
+    }
+
+    public void confSignout(){
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setTitle("Sign Out?");
+        alert.setMessage("Are you sure you want to sign out?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                signOut();
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
     }
 
 
