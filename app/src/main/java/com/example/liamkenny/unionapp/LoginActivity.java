@@ -43,17 +43,13 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        //Code for processing an auto login.
-        //Needs to be updated to check if specific user is logged on.
-        /*
-        if(fbUser!=null){
-            finish();
-            Toast.makeText(this, "Auto-Login.", Toast.LENGTH_SHORT).show();
-            Intent autoLoginIntent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(autoLoginIntent);
-        }
-        */
 
+        /*
+            Listener for login button
+            - logs in user if credentials are correct
+            - error message for incorrect credentials
+            - error message for incomplete form
+         */
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,16 +57,20 @@ public class LoginActivity extends AppCompatActivity {
                 String password = mPassword.getText().toString().trim();
                 String email = URN + "@surrey.ac.uk".trim();
 
+                //Checks if the user has entered credentials
                 if(URN.isEmpty() || password.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Please fill in your credentials.", Toast.LENGTH_SHORT).show();
                     mPassword.setText("");
                 }else{
                     login(email, password);
                 }
-
             }
         });
 
+        /*
+            Opens the Register activity (to be removed at a later date)
+            TODO: Remove this functionality once app is ready
+         */
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /*
+        Method used to setup views when activity is loaded
+     */
     private void setupView(){
         mURN = (EditText) findViewById(R.id.etUsername);
         mPassword = (EditText)findViewById(R.id.etPassword);
@@ -87,6 +90,9 @@ public class LoginActivity extends AppCompatActivity {
         mRegister = (TextView)findViewById(R.id.tvRegister);
     }
 
+    /*
+       Logs the user into the app through firebase.
+     */
     private void login(String URN, String password){
         String email = URN + "@surrey.ac.uk".trim();
 
@@ -110,6 +116,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /*
+        Override of method when back button is pressed
+        - checks for double press before closing app
+     */
     @Override
     public void onBackPressed() {
         if (doubleBackPress) {
@@ -127,8 +137,5 @@ public class LoginActivity extends AppCompatActivity {
                 doubleBackPress=false;
             }
         }, 2000);
-
-
-
     }
 }
