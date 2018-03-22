@@ -3,6 +3,7 @@
 
     <string name="home">Home</string>
     <string name="login">Login</string>
+    <string name="profile">Profile</string>
 
     <string name="name">Name</string>
     <string name="username">Username</string>
@@ -53,5 +54,8 @@ You can also email me on ussu.president@surrey.ac.uk.
 
 I hope you have a fantastic year here at Surrey, and I'm excited to be a part of it.​
     </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

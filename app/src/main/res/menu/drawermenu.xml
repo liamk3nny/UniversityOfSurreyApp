@@ -15,24 +15,32 @@
 
             </item>
 
+            <item android:id="@+id/profile"
+                android:title="@string/profile"
+                android:icon="@drawable/user"
+                android:orderInCategory="2">
+
+            </item>
+
+
 
             <item android:id="@+id/shop"
                 android:title="@string/drawer_item_1"
                 android:icon="@drawable/ic_shop_black_24dp"
-                android:orderInCategory="2">
+                android:orderInCategory="3">
 
             </item>
 
             <item android:id="@+id/events"
                 android:title="@string/drawer_item_2"
                 android:icon="@drawable/ic_event_black_24dp"
-                android:orderInCategory="3">
+                android:orderInCategory="4">
             </item>
 
             <item android:id="@+id/societies"
                 android:title="@string/drawer_item_3"
                 android:icon="@drawable/ic_school_black_24dp"
-                android:orderInCategory="4">
+                android:orderInCategory="5">
             </item>
         </menu>
     </item>

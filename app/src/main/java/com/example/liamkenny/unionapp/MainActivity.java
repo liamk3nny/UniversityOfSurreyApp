@@ -130,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 activity = "home";
                 break;
 
+            case R.id.profile:
+                fragmentClass = ProfileFragment.class;
+
             case R.id.shop:
                 break;
 
