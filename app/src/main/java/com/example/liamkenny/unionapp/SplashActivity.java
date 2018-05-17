@@ -29,8 +29,9 @@ private ImageView logo;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                startActivity(openlogin);
                 finish();
+                startActivity(openlogin);
+
             }
         };
         timer.start();
