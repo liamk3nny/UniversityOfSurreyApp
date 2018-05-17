@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,18 +39,15 @@ import java.util.List;
 
 
 
-
-
-
-
-
-
 public class MainActivity extends AppCompatActivity {
     //Hamburger Menu items
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private FirebaseAuth firebaseAuth;
     private NavigationView drawer;
+    private LinearLayout profileTab;
+    private ImageView profilePic;
+
 
     //Tab layout items
     private TabLayout tabLayout;
@@ -92,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-
         //Hamburger menu items
         NavigationView drawer = (NavigationView)findViewById(R.id.navigation_view);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -102,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupDrawerContent(drawer);
+
+        profileTab = (LinearLayout)findViewById(R.id.profile_layout);
+        profilePic = (ImageView)findViewById(R.id.imgProfile);
+
+
     }
 
     /*
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
             fragmentTransaction.add(R.id.fragment_layout, fragment);
             fragmentTransaction.addToBackStack(fragment.toString());
             fragmentTransaction.commit();
@@ -224,21 +227,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(this.drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawers();
-        }else if(getSupportFragmentManager().getBackStackEntryCount() != 1){
-            if (doubleBackPress) {
-                super.onBackPressed();
-                return;
-            }
-
-            this.doubleBackPress = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doubleBackPress=false;
-                }
-            }, 2000);
         }else{
             super.onBackPressed();
         }
