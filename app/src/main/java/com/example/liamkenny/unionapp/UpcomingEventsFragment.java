@@ -17,17 +17,15 @@ public class UpcomingEventsFragment extends Fragment {
 
     private static final String TAG = "UpcomingEventsFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
 
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView mRecyclerView;
     protected EventsAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected String[] mDataset;
+    protected String[] mEventNames;
 
     private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
 
@@ -53,7 +51,7 @@ public class UpcomingEventsFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new EventsAdapter(mDataset);
+        mAdapter = new EventsAdapter(mEventNames);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -88,9 +86,9 @@ public class UpcomingEventsFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mDataset = new String[DATASET_COUNT];
+        mEventNames = new String[DATASET_COUNT];
         for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = "This is element #" + i;
+            mEventNames[i] = "This is element #" + i;
         }
     }
 

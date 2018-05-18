@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
 
-    private String[] mDataSet;
+    private String[] mEventNames;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
@@ -24,7 +24,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
                 }
             });
-            textView = (TextView) v.findViewById(R.id.textView);
+            textView = (TextView) v.findViewById(R.id.event_name);
         }
 
         public TextView getTextView() {
@@ -33,7 +33,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     }
 
     public EventsAdapter(String[] dataSet) {
-        mDataSet = dataSet;
+        mEventNames = dataSet;
     }
 
 
@@ -52,12 +52,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(mDataSet[position]);
+        viewHolder.getTextView().setText(mEventNames[position]);
     }
 
 
 
     public int getItemCount() {
-        return mDataSet.length;
+        return mEventNames.length;
     }
 }
