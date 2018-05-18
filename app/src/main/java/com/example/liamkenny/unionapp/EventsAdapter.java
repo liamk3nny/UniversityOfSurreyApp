@@ -1,11 +1,14 @@
 package com.example.liamkenny.unionapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
@@ -13,6 +16,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private String[] mEventNames;
     private String[] mEventInfo;
     private String[] mEventDate;
+    private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView eventName;
@@ -52,12 +56,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         mEventNames = eventNames;
         mEventInfo = eventInfo;
         mEventDate = eventDates;
+        //mContext = context;
     }
 
 
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext())
+        mContext = viewGroup.getContext();
+        View v = LayoutInflater.from(mContext)
                 .inflate(R.layout.fragment_event_item, viewGroup, false);
 
         return new ViewHolder(v);
@@ -72,7 +78,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         // with that element
         viewHolder.getEventName().setText(mEventNames[position]);
         viewHolder.getEventInfo().setText(mEventInfo[position]);
-        viewHolder.getEventDate().setText(mEventDate[position]);
+        viewHolder.getEventDate().setText(mEventDate [position]);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "Selected item " + position , Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 
