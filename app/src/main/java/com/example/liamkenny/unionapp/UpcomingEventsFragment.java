@@ -23,7 +23,9 @@ public class UpcomingEventsFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected EventsAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+
     protected String[] mEventNames;
+
 
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER

@@ -67,10 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /*
-            Opens the Register activity (to be removed at a later date)
-            TODO: Remove this functionality once app is ready
-         */
+
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

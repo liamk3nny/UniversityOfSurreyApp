@@ -11,9 +11,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private static final String TAG = "CustomAdapter";
 
     private String[] mEventNames;
+    private String[] mEventInfo;
+    private String[] mEventDate;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView eventName;
+        private final TextView eventInfo;
+        private final TextView eventDate;
 
         public ViewHolder(View v) {
             super(v);
@@ -24,16 +28,28 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
                 }
             });
-            textView = (TextView) v.findViewById(R.id.event_name);
+            eventName = (TextView) v.findViewById(R.id.event_name);
+            eventInfo = (TextView) v.findViewById(R.id.event_info);
+            eventDate = (TextView) v.findViewById(R.id.event_date);
+
         }
 
-        public TextView getTextView() {
-            return textView;
+        public TextView getEventName() {
+            return eventName;
         }
+
+        public TextView getEventInfo() {
+            return eventInfo;
+        }
+
+        public TextView getEventDate() {
+            return eventDate;
+        }
+
     }
 
-    public EventsAdapter(String[] dataSet) {
-        mEventNames = dataSet;
+    public EventsAdapter(String[] eventNames) {
+        mEventNames = eventNames;
     }
 
 
@@ -52,7 +68,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(mEventNames[position]);
+        viewHolder.getEventName().setText(mEventNames[position]);
     }
 
 
