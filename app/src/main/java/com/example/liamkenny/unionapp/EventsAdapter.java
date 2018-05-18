@@ -56,7 +56,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         mEventNames = eventNames;
         mEventInfo = eventInfo;
         mEventDate = eventDates;
-        //mContext = context;
     }
 
 
