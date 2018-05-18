@@ -25,6 +25,8 @@ public class UpcomingEventsFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
 
     protected String[] mEventNames;
+    protected String[] mEventInfo;
+    protected String[] mEventDates;
 
 
     private enum LayoutManagerType {
@@ -53,7 +55,7 @@ public class UpcomingEventsFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new EventsAdapter(mEventNames);
+        mAdapter = new EventsAdapter(mEventNames, mEventInfo, mEventDates);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -89,8 +91,12 @@ public class UpcomingEventsFragment extends Fragment {
      */
     private void initDataset() {
         mEventNames = new String[DATASET_COUNT];
+        mEventInfo = new String[DATASET_COUNT];
+        mEventDates = new String[DATASET_COUNT];
         for (int i = 0; i < DATASET_COUNT; i++) {
             mEventNames[i] = "This is element #" + i;
+            mEventInfo[i] = "All the info we couldnt fit in the title for item " + i;
+            mEventDates[i] = i + "/01/2018";
         }
     }
 

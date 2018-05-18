@@ -48,8 +48,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
     }
 
-    public EventsAdapter(String[] eventNames) {
+    public EventsAdapter(String[] eventNames, String[] eventInfo, String[] eventDates) {
         mEventNames = eventNames;
+        mEventInfo = eventInfo;
+        mEventDate = eventDates;
     }
 
 
@@ -69,6 +71,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         viewHolder.getEventName().setText(mEventNames[position]);
+        viewHolder.getEventInfo().setText(mEventInfo[position]);
+        viewHolder.getEventDate().setText(mEventDate[position]);
     }
 
 
