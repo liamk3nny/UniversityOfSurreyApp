@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.Object;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -131,11 +133,18 @@ public class RegisterActivity extends AppCompatActivity {
         boolean valid = false;
         String firstname = mFirstname.getText().toString();
         String surname = mSurname.getText().toString();
-        String URN = mUsername.getText().toString();
+        String username = mUsername.getText().toString();
         String password1 = mPassword1.getText().toString().trim();
         String password2 = mPassword2.getText().toString().trim();
-        if(firstname.isEmpty() || surname.isEmpty() || URN.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+        String usernameCheck = "[a-z]{2}[0-9]{5}";
+
+        if(firstname.isEmpty() || surname.isEmpty() || username.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Please complete all fields.", Toast.LENGTH_SHORT).show();
+            mPassword1.setText("");
+            mPassword2.setText("");
+        } else if (!Pattern.matches(usernameCheck, username)){
+            Toast.makeText(RegisterActivity.this, "Invalid username - should follow ab01234", Toast.LENGTH_LONG).show();
+            mUsername.setText("");
             mPassword1.setText("");
             mPassword2.setText("");
         } else if (!password1.equals(password2)) {
