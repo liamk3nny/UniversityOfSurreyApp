@@ -19,7 +19,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText mName;
+
+    private EditText mFirstname;
+    private EditText mSurname;
     private EditText mURN;
     private EditText mPassword1;
     private EditText mPassword2;
@@ -38,11 +40,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validate()){
-                    String name = mName.getText().toString().trim();
+                    //TODO change strings with name
+                    String firstname = mFirstname.getText().toString().trim();
+                    String surname = mSurname.getText().toString().trim();
                     String URN = mURN.getText().toString().trim();
                     String email = URN + "@surrey.ac.uk".trim();
                     String password1 = mPassword1.getText().toString().trim();
 
+                    //TODO Create User in Database
                     firebaseAuth.createUserWithEmailAndPassword(email, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -73,7 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupView(){
-        mName = (EditText)findViewById(R.id.etName);
+        mFirstname = (EditText)findViewById(R.id.etFirstname);
+        mSurname = (EditText)findViewById(R.id.etSurname);
         mURN = (EditText)findViewById(R.id.etUsername);
         mPassword1 = (EditText)findViewById(R.id.etPassword1);
         mPassword2 = (EditText)findViewById(R.id.etPassword2);
@@ -83,15 +89,20 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validate(){
         boolean valid = false;
-        String name = mName.getText().toString();
+        String firstname = mFirstname.getText().toString();
+        String surname = mSurname.getText().toString();
         String URN = mURN.getText().toString();
         String password1 = mPassword1.getText().toString().trim();
         String password2 = mPassword2.getText().toString().trim();
-        if(name.isEmpty() || URN.isEmpty() || password1.isEmpty() || password2.isEmpty()){
+        if(firstname.isEmpty() || surname.isEmpty() || URN.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Please complete all fields.", Toast.LENGTH_SHORT).show();
             mPassword1.setText("");
             mPassword2.setText("");
-        }else{
+        } else if (!password1.equals(password2)) {
+            Toast.makeText(RegisterActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+            mPassword1.setText("");
+            mPassword2.setText("");
+        } else {
             valid = true;
         }
         return valid;
