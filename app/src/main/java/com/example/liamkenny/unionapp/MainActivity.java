@@ -2,14 +2,11 @@ package com.example.liamkenny.unionapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Handler;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -18,24 +15,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 
@@ -134,8 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.profile:
                 fragmentClass = ProfileFragment.class;
+                break;
 
             case R.id.shop:
+                fragmentClass = ShopFragment.class;
                 break;
 
             case R.id.events:
@@ -179,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //uncheckItems();
-
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
