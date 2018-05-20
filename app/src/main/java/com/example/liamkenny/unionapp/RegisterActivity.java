@@ -95,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 });
 
                                 Toast.makeText(RegisterActivity.this, "Registration Complete.", Toast.LENGTH_SHORT).show();
-                                Intent registerIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
                                 startActivity(registerIntent);
                             }else{
                                 Toast.makeText(RegisterActivity.this, "Registration Failed.", Toast.LENGTH_SHORT).show();
