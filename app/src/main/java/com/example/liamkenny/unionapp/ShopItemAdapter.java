@@ -49,8 +49,8 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(context, "Selected item " + position + "is: " + productsList.get(position).getProductName() , Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(context, "Added " + prod.getProductName() + " to basket." , Toast.LENGTH_SHORT).show();
+                //TODO add to basket on click
                 return true;
             }
         });

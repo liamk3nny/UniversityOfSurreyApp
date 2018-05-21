@@ -58,6 +58,7 @@ public class ShopFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db.setFirestoreSettings(settings);
+        setupList();
 
     }
 
@@ -107,7 +108,7 @@ public class ShopFragment extends Fragment {
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
-        setupList();
+
         return rootView;
     }
 
@@ -164,11 +165,20 @@ public class ShopFragment extends Fragment {
                 });
 
 
-    /**
+        //TODO remove when sample size is bigger
         products.add(new Product("1", "Hoodie", "Hoodie", 25));
-        products.add(new Product("2", "CompSOC Beanie", "BEANIE", 25));
 
-    **/
+        products.add(new Product("2", "Baseball Cap", "Hoodie", 25));
+        products.add(new Product("3", "CompSOC Beanie", "BEANIE", 25));
+        products.add(new Product("4", "Blouse", "Hoodie", 25));
+        products.add(new Product("5", "Flat Cap", "BEANIE", 25));
+        products.add(new Product("6", "Jeans", "Hoodie", 25));
+        products.add(new Product("7", "Headband", "BEANIE", 25));
+        products.add(new Product("8", "Scarf", "Hoodie", 25));
+        products.add(new Product("9", "Socks", "BEANIE", 25));
+
+
+
     }
 
 }

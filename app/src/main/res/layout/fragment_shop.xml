@@ -18,7 +18,8 @@
             android:textColor="@color/white"
             android:textSize="30dp"
             android:text="USSU SHOP"
-            android:paddingBottom="15dp"/>
+            android:paddingBottom="40dp"
+            android:layout_margin="10dp"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -26,9 +27,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/basketButton"
             android:src="@drawable/baseline_local_grocery_store_black_18dp"
-            android:padding="5dp"
+            android:padding="15dp"
+            android:layout_margin="10dp"
 
             android:background="@color/white"
+            android:fadingEdge="horizontal"
+
 
             />
 
@@ -39,6 +43,7 @@
             android:id="@+id/shopIntro"
             android:layout_below="@+id/basketButton"
             android:textColor="@color/white"
+            android:layout_marginTop="30dp"
             android:textSize="16dp"
             android:text="Welcome to the USSU shop. Please click on an item to add it to your basket"/>
 
