@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,11 +41,19 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         return new MyViewHolder(itemView);
     }
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
-        Product prod = productsList.get(position);
+    public void onBindViewHolder(MyViewHolder holder, final int position){
+        final Product prod = productsList.get(position);
         holder.name.setText(prod.getProductName());
         holder.price.setText("£" + Double.toString(prod.getProductPrice()));
         holder.category.setText(prod.getProductType());
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(context, "Selected item " + position + "is: " + productsList.get(position).getProductName() , Toast.LENGTH_SHORT).show();
+
+                return true;
+            }
+        });
 
     }
 

@@ -77,7 +77,7 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Activity activity = getActivity();
-                Toast.makeText(activity,"Text!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"This will replace current fragment with the basket fragment!",Toast.LENGTH_SHORT).show();
                 /**
                 try {
                     fragment = (Fragment) BasketFragment.class.newInstance();
