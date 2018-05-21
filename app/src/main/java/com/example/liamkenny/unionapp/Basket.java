@@ -8,7 +8,10 @@ public class Basket {
 
     private ArrayList<Basket_Product> basket_Items;
 
-
+    public Basket(){
+        this.basket_Items = new ArrayList<Basket_Product>();
+    }
+    
     public Basket(ArrayList<Basket_Product> items) {
         this.basket_Items = items;
     }
