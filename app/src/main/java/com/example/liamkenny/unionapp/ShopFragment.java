@@ -88,6 +88,9 @@ public class ShopFragment extends Fragment {
     }
 
     private void setupList(){
+
+
+        
         products.add(new Product(1, "Hoodie", PRODUCT_TYPE.HOODIE, 25));
         products.add(new Product(2, "CompSOC Beanie", PRODUCT_TYPE.BEANIE, 25));
 

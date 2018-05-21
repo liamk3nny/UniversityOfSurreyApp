@@ -31,17 +31,31 @@
                 android:textSize="30sp"
 
                 />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/product_name">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20sp"
-                android:textSize="30sp"
-                android:id="@+id/product_price"
-                android:layout_toRightOf="@+id/product_name"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="Price: "
+                    android:id="@+id/price_label"
+                    />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+                    android:textSize="20sp"
+                    android:id="@+id/product_price"
+                    android:layout_toRightOf="@+id/price_label"
+                    />
 
-                />
+            </LinearLayout>
+
 
 
 
