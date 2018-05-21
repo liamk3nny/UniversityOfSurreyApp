@@ -13,13 +13,15 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
     private ArrayList<Product> productsList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView name;
-        public TextView price;
+        private TextView name;
+        private TextView price;
+        private TextView category;
 
         public MyViewHolder(View view){
             super(view);
             name = (TextView) view.findViewById(R.id.product_name);
             price = (TextView) view.findViewById(R.id.product_price);
+            category = (TextView) view.findViewById(R.id.product_cat);
         }
     }
 
@@ -37,6 +39,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         Product prod = productsList.get(position);
         holder.name.setText(prod.getProductName());
         holder.price.setText("£" + Double.toString(prod.getProductPrice()));
+        holder.category.setText(prod.getProductType());
     }
 
     @Override

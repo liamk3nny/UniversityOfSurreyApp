@@ -4,13 +4,16 @@ public class Product {
 
     //TODO: Add validations w/ try & exceptions
 
-    private int productID;
+    private String productID;
     private String productName;
-    private PRODUCT_TYPE productType;
+    private String productType;
     private double productPrice;
 
+    public Product(){
 
-    public Product(int id, String name, PRODUCT_TYPE type, double price) {
+    }
+
+    public Product(String id, String name, String type, double price) {
 
         super();
         this.productID = id;
@@ -20,11 +23,11 @@ public class Product {
 
     }
 
-    public int getProductID() {
+    public String getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 
@@ -45,12 +48,12 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public PRODUCT_TYPE getProductType() {
+    public String getProductType() {
 
         return productType;
     }
 
-    public void setProductType(PRODUCT_TYPE productType) {
+    public void setProductType(String productType) {
         this.productType = productType;
     }
 

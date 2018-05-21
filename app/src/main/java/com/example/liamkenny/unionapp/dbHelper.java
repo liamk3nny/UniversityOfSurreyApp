@@ -61,7 +61,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
 
         String createSQL = "CREATE TABLE " + Product_Table_Name + "(" +
-                "productID INTEGER, " +
+                "productID TEXT, " +
                 "productName TEXT, " +
                 "productType TEXT, " +
                 "productPrice REAL," +

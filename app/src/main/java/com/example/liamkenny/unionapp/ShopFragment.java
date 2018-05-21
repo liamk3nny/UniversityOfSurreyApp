@@ -1,6 +1,7 @@
 package com.example.liamkenny.unionapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ShopFragment extends Fragment {
 
@@ -28,6 +38,13 @@ public class ShopFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
     private TextView title;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+            .setTimestampsInSnapshotsEnabled(true)
+            .build();
+
+
 
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
@@ -36,7 +53,8 @@ public class ShopFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupList();
+        db.setFirestoreSettings(settings);
+
     }
 
     @Override
@@ -61,7 +79,7 @@ public class ShopFragment extends Fragment {
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
-
+        setupList();
         return rootView;
     }
 
@@ -90,11 +108,39 @@ public class ShopFragment extends Fragment {
     private void setupList(){
 
 
-        
-        products.add(new Product(1, "Hoodie", PRODUCT_TYPE.HOODIE, 25));
-        products.add(new Product(2, "CompSOC Beanie", PRODUCT_TYPE.BEANIE, 25));
+        db.collection("Product")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                String id = document.getId();
+                                Map data = document.getData();
+                                String name = document.getString("Product_name");
+                                String cat = document.getString("ProductType");
+                                double price = document.getDouble("Price");
+                                Product prod = new Product(id,name,cat,price);
+
+                                products.add(prod);
+                                mAdapter.notifyDataSetChanged();
+
+                                Log.d(TAG, products.get(0).getProductID());
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
 
+    /**
+        products.add(new Product("1", "Hoodie", "Hoodie", 25));
+        products.add(new Product("2", "CompSOC Beanie", "BEANIE", 25));
+
+    **/
     }
 
 }
