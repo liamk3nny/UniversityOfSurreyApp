@@ -85,23 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Setup Firestore settings
         db.setFirestoreSettings(settings);
-        DocumentReference docRef = db.collection("Student").document(userID);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        userInfo = document.getData();
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+
         //getStudentDoc();
 
         setupView();
@@ -130,13 +114,30 @@ public class MainActivity extends AppCompatActivity {
         //Hamburger menu items
         NavigationView drawer = (NavigationView) findViewById(R.id.navigation_view);
         View headerView = drawer.getHeaderView(0);
-        TextView nav_username = (TextView) headerView.findViewById(R.id.user_name);
-        TextView nav_email = (TextView) headerView.findViewById(R.id.user_email);
+        final TextView nav_username = (TextView) headerView.findViewById(R.id.user_name);
+        final TextView nav_email = (TextView) headerView.findViewById(R.id.user_email);
         Log.d("Navbar", "intialiing nav bar");
-        //if (userInfo.containsKey("Forename") && userInfo.containsKey("Surname")) {
-        //    String username = userInfo.get("Forename") + " " + userInfo.get("Surname");
-        //    nav_username.setText(username);
-        //}
+        DocumentReference docRef = db.collection("Student").document(userID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        userInfo = document.getData();
+                        String username = userInfo.get("Forename") + " " + userInfo.get("Surname");
+                        String email = userInfo.get("Username") + "@surrey.ac.uk";
+                        nav_username.setText(username);
+                        nav_email.setText(email);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
