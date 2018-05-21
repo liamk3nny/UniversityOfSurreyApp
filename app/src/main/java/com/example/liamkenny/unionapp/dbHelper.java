@@ -57,7 +57,20 @@ public class dbHelper extends SQLiteOpenHelper {
 
     }
 
-    private void createProductTable() {
+    private void createProductTable(SQLiteDatabase s) {
+
+
+        String createSQL = "CREATE TABLE " + Product_Table_Name + "(" +
+                "productID INTEGER, " +
+                "productName TEXT, " +
+                "productType TEXT, " +
+                "productPrice REAL," +
+                "productQuantity INTEGER," +
+                "PRIMARY KEY(productID));";
+        s.execSQL(createSQL);
+
+
+
     }
 
     private void addProductToBasket() {

@@ -3,12 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShopFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context=".ShopFragment"
+    android:background="@color/colorPrimary">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="SHOP" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shopTitle"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:text="USSU SHOP"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/basketButton"
+
+            android:text="View Basket"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shopIntro"
+            android:layout_below="@+id/basketButton"
+            android:text="Welcome to the USSU shop"/>
+
+
+
+
+
+    <!-- TODO: Update blank fragment layout -->
+        <android.support.v7.widget.RecyclerView
+            android:paddingTop="10dp"
+            android:orientation="vertical"
+            android:id="@+id/shopRecycler"
+            android:layout_below="@id/shopIntro"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+        />
+
+
+    </RelativeLayout>
+
+
 
 </FrameLayout>
