@@ -1,5 +1,6 @@
 package com.example.liamkenny.unionapp;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,7 +40,8 @@ public class ShopFragment extends Fragment {
     protected ShopItemAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     private TextView title;
-
+    private ImageButton basketButton;
+    private Fragment fragment;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -67,8 +71,32 @@ public class ShopFragment extends Fragment {
 
         // BEGIN_INCLUDE(initializeRecyclerView)
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.shopRecycler);
+        basketButton = (ImageButton) rootView.findViewById(R.id.basketButton);
 
-        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
+        basketButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity activity = getActivity();
+                Toast.makeText(activity,"Text!",Toast.LENGTH_SHORT).show();
+                /**
+                try {
+                    fragment = (Fragment) BasketFragment.class.newInstance();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                //uncheckItems();
+                FragmentManager fragmentManager = getFragmentManager();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+                fragmentTransaction.replace(R.id.fragment_layout, fragment);
+                fragmentTransaction.addToBackStack(fragment.toString());
+                fragmentTransaction.commit();
+                 **/
+            }
+        });
+        // LinearLayoutManager is used here, this will layoutt the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
         // elements are laid out.
         mLayoutManager = new LinearLayoutManager(getActivity());

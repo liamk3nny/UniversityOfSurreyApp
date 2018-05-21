@@ -1,5 +1,6 @@
 package com.example.liamkenny.unionapp;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +12,20 @@ import java.util.ArrayList;
 public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyViewHolder> {
 
     private ArrayList<Product> productsList;
-
+    private Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView price;
         private TextView category;
+
 
         public MyViewHolder(View view){
             super(view);
             name = (TextView) view.findViewById(R.id.product_name);
             price = (TextView) view.findViewById(R.id.product_price);
             category = (TextView) view.findViewById(R.id.product_cat);
+
+
         }
     }
 
@@ -31,6 +35,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        context = parent.getContext();
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_item_row, parent, false);
         return new MyViewHolder(itemView);
     }
@@ -40,6 +45,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         holder.name.setText(prod.getProductName());
         holder.price.setText("£" + Double.toString(prod.getProductPrice()));
         holder.category.setText(prod.getProductType());
+
     }
 
     @Override
