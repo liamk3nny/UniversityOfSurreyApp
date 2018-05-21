@@ -3,68 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShopFragment"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    tools:context=".ShopFragment">
+
     <RelativeLayout
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/shopTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/shopTitle"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:text="USSU SHOP"
+            android:layout_margin="10dp"
             android:paddingBottom="40dp"
-            android:layout_margin="10dp"/>
+            android:text="USSU SHOP"
+            android:textColor="@color/white"
+            android:textStyle="italic|bold"
+            android:textSize="50sp" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_height="wrap_content"
             android:id="@+id/basketButton"
-            android:src="@drawable/baseline_local_grocery_store_black_18dp"
-            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-
             android:background="@color/white"
             android:fadingEdge="horizontal"
+
+
+            android:padding="15dp"
+            android:src="@drawable/baseline_local_grocery_store_black_18dp"
 
 
             />
 
         <TextView
-            android:layout_margin="5dp"
+            android:id="@+id/shopIntro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/shopIntro"
             android:layout_below="@+id/basketButton"
+            android:layout_margin="5dp"
+            android:layout_marginTop="50dp"
+            android:text="Welcome to the USSU shop. Please hold click on an item to add it to your basket. When ready to pay please click on the basket button."
+            android:textStyle="italic"
             android:textColor="@color/white"
-            android:layout_marginTop="30dp"
-            android:textSize="16dp"
-            android:text="Welcome to the USSU shop. Please click on an item to add it to your basket"/>
+            android:textSize="20dp" />
 
 
-
-
-
-    <!-- TODO: Update blank fragment layout -->
+        <!-- TODO: Update blank fragment layout -->
         <android.support.v7.widget.RecyclerView
-            android:paddingTop="10dp"
-            android:orientation="vertical"
             android:id="@+id/shopRecycler"
-            android:layout_below="@id/shopIntro"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shopIntro"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:background="@color/colorPrimary"
 
-        />
+            />
 
 
     </RelativeLayout>
-
 
 
 </FrameLayout>
