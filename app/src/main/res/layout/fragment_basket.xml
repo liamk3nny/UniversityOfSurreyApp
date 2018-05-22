@@ -3,12 +3,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BasketFragment">
+    tools:context=".BasketFragment"
+    android:background="@color/colorPrimary">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/basketTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingBottom="40dp"
+            android:text="YOUR BASKET"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:textStyle="italic|bold" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:id="@+id/ClearBasketButton"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_toRightOf="@id/basketTitle"
+            android:text="Clear Basket"
+            android:background="@color/white"
+            android:layout_centerHorizontal="true"
+            android:padding="15dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/basketRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/basketTitle"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+
+            />
+
+    </RelativeLayout>
+
+
 
 </FrameLayout>

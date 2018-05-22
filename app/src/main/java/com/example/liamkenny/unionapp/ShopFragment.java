@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -106,8 +108,8 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Activity activity = getActivity();
-                Toast.makeText(activity,"This will replace current fragment with the basket fragment!",Toast.LENGTH_SHORT).show();
-                /**
+                Toast.makeText(activity,"Replacing shop fragment with basket fragment!",Toast.LENGTH_SHORT).show();
+
                 try {
                     fragment = (Fragment) BasketFragment.class.newInstance();
                 }
@@ -122,7 +124,7 @@ public class ShopFragment extends Fragment {
                 fragmentTransaction.replace(R.id.fragment_layout, fragment);
                 fragmentTransaction.addToBackStack(fragment.toString());
                 fragmentTransaction.commit();
-                 **/
+
             }
         });
         // LinearLayoutManager is used here, this will layoutt the elements in a similar fashion
