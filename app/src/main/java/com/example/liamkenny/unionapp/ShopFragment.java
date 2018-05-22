@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -61,7 +62,7 @@ public class ShopFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db.setFirestoreSettings(settings);
-        setupList();
+
 
     }
 
@@ -81,6 +82,26 @@ public class ShopFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_spinner_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(spinner.getSelectedItem().equals("All Products")){
+                    Toast.makeText(getActivity(), "You selected: all items", Toast.LENGTH_SHORT).show();
+                    setupList();
+                }else{
+                    filterList(spinner.getSelectedItem().toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         basketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,9 +162,42 @@ public class ShopFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+
+
+    private void filterList(String opt){
+        products.clear();
+        db.collection("Product").whereEqualTo("ProductType", opt)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                String id = document.getId();
+                                Map data = document.getData();
+                                String name = document.getString("Product_name");
+                                String cat = document.getString("ProductType");
+                                double price = document.getDouble("Price");
+                                Product prod = new Product(id,name,cat,price);
+
+                                products.add(prod);
+                                mAdapter.notifyDataSetChanged();
+
+                                Log.d(TAG, products.get(0).getProductID());
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
     private void setupList(){
 
-
+        products.clear();
         db.collection("Product")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -172,17 +226,7 @@ public class ShopFragment extends Fragment {
                 });
 
 
-        //TODO remove when sample size is bigger
-        products.add(new Product("1", "Hoodie", "Hoodie", 25));
 
-        products.add(new Product("2", "Baseball Cap", "Cap", 9));
-        products.add(new Product("3", "CompSOC Beanie", "Hat", 5));
-        products.add(new Product("4", "Blouse", "Top", 34));
-        products.add(new Product("5", "Flat Cap", "Hat", 5));
-        products.add(new Product("6", "Jeans", "Trousers", 43));
-        products.add(new Product("7", "Headband", "Hat", 68));
-        products.add(new Product("8", "Scarf", "Accessory", 2));
-        products.add(new Product("9", "Socks", "Accessory", 5));
 
 
 
