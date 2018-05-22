@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class ShopFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected ShopItemAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+    private Spinner spinner;
     private TextView title;
     private ImageButton basketButton;
     private Fragment fragment;
@@ -74,6 +77,10 @@ public class ShopFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.shopRecycler);
         basketButton = (ImageButton) rootView.findViewById(R.id.basketButton);
 
+        spinner = (Spinner) rootView.findViewById(R.id.FilterSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_spinner_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         basketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,14 +175,14 @@ public class ShopFragment extends Fragment {
         //TODO remove when sample size is bigger
         products.add(new Product("1", "Hoodie", "Hoodie", 25));
 
-        products.add(new Product("2", "Baseball Cap", "Hoodie", 25));
-        products.add(new Product("3", "CompSOC Beanie", "BEANIE", 25));
-        products.add(new Product("4", "Blouse", "Hoodie", 25));
-        products.add(new Product("5", "Flat Cap", "BEANIE", 25));
-        products.add(new Product("6", "Jeans", "Hoodie", 25));
-        products.add(new Product("7", "Headband", "BEANIE", 25));
-        products.add(new Product("8", "Scarf", "Hoodie", 25));
-        products.add(new Product("9", "Socks", "BEANIE", 25));
+        products.add(new Product("2", "Baseball Cap", "Cap", 9));
+        products.add(new Product("3", "CompSOC Beanie", "Hat", 5));
+        products.add(new Product("4", "Blouse", "Top", 34));
+        products.add(new Product("5", "Flat Cap", "Hat", 5));
+        products.add(new Product("6", "Jeans", "Trousers", 43));
+        products.add(new Product("7", "Headband", "Hat", 68));
+        products.add(new Product("8", "Scarf", "Accessory", 2));
+        products.add(new Product("9", "Socks", "Accessory", 5));
 
 
 

@@ -49,7 +49,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+        createProductTable(sqLiteDatabase);
     }
 
     @Override
@@ -70,28 +70,33 @@ public class dbHelper extends SQLiteOpenHelper {
         s.execSQL(createSQL);
 
 
-
     }
 
-    private void addProductToBasket() {
+    public void addProductToBasket() {
     }
 
-    ;
 
-    private void removeProductFromBasket() {
+
+    public void removeProductFromBasket() {
     }
 
-    ;
 
-    private void updateProductQuantity() {
+
+    public void updateProductQuantity() {
     }
 
-    ;
 
-    private void clearBasket() {
+
+    public void clearBasket() {
     }
 
-    ;
+    public boolean isProductInDB(){
+        return false; //TODO fix
+    }
+
+
+
+
 
 }
 
