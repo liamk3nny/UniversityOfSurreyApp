@@ -16,12 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -35,7 +33,6 @@ public class ShopFragment extends Fragment {
     private ArrayList<Product> products = new ArrayList<Product>();
 
 
-
     private static final String TAG = "ShopFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
 
@@ -45,15 +42,12 @@ public class ShopFragment extends Fragment {
     protected ShopItemAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     private Spinner spinner;
-    private TextView title;
     private ImageButton basketButton;
     private Fragment fragment;
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
-
 
 
     private enum LayoutManagerType {
@@ -71,7 +65,6 @@ public class ShopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "");
         View rootView = inflater
                 .inflate(R.layout.fragment_shop, container, false);
         rootView.setTag(TAG);
@@ -89,10 +82,10 @@ public class ShopFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(spinner.getSelectedItem().equals("All Products")){
+                if (spinner.getSelectedItem().equals("All Products")) {
                     Toast.makeText(getActivity(), "You selected: all items", Toast.LENGTH_SHORT).show();
                     setupList();
-                }else{
+                } else {
                     filterList(spinner.getSelectedItem().toString());
                 }
             }
@@ -108,12 +101,11 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Activity activity = getActivity();
-                Toast.makeText(activity,"Replacing shop fragment with basket fragment!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Replacing shop fragment with basket fragment!", Toast.LENGTH_SHORT).show();
 
                 try {
                     fragment = (Fragment) BasketFragment.class.newInstance();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 //uncheckItems();
@@ -137,12 +129,11 @@ public class ShopFragment extends Fragment {
         mAdapter = new ShopItemAdapter(products);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
-        // END_INCLUDE(initializeRecyclerView)
 
         return rootView;
     }
 
-    public void setRecyclerViewLayoutManager(){
+    public void setRecyclerViewLayoutManager() {
         int scrollPosition = 0;
 
         // If a layout manager has already been set, get current scroll position.
@@ -165,8 +156,7 @@ public class ShopFragment extends Fragment {
     }
 
 
-
-    private void filterList(String opt){
+    private void filterList(String opt) {
         products.clear();
         db.collection("Product").whereEqualTo("ProductType", opt)
                 .get()
@@ -181,7 +171,7 @@ public class ShopFragment extends Fragment {
                                 String name = document.getString("Product_name");
                                 String cat = document.getString("ProductType");
                                 double price = document.getDouble("Price");
-                                Product prod = new Product(id,name,cat,price);
+                                Product prod = new Product(id, name, cat, price);
 
                                 products.add(prod);
                                 mAdapter.notifyDataSetChanged();
@@ -197,7 +187,7 @@ public class ShopFragment extends Fragment {
 
     }
 
-    private void setupList(){
+    private void setupList() {
 
         products.clear();
         db.collection("Product")
@@ -213,7 +203,7 @@ public class ShopFragment extends Fragment {
                                 String name = document.getString("Product_name");
                                 String cat = document.getString("ProductType");
                                 double price = document.getDouble("Price");
-                                Product prod = new Product(id,name,cat,price);
+                                Product prod = new Product(id, name, cat, price);
 
                                 products.add(prod);
                                 mAdapter.notifyDataSetChanged();
@@ -226,10 +216,6 @@ public class ShopFragment extends Fragment {
                         }
                     }
                 });
-
-
-
-
 
 
     }
