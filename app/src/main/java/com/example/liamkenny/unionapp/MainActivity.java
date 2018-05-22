@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private void setupView(){
 
         //Layout items for tabbed fragments
-        tabLayout = (TabLayout)findViewById(R.id.home_tab_layout);
-        viewPager = (ViewPager)findViewById(R.id.home_page_viewer);
+        tabLayout = findViewById(R.id.home_tab_layout);
+        viewPager = findViewById(R.id.home_page_viewer);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
 
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Hamburger menu items
-        NavigationView drawer = (NavigationView)findViewById(R.id.navigation_view);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        NavigationView drawer = findViewById(R.id.navigation_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupDrawerContent(drawer);
 
-        profileTab = (LinearLayout)findViewById(R.id.profile_layout);
-        profilePic = (ImageView)findViewById(R.id.imgProfile);
+        profileTab = findViewById(R.id.profile_layout);
+        profilePic = findViewById(R.id.imgProfile);
 
 
     }

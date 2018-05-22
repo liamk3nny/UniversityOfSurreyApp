@@ -34,7 +34,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:layout_alignParentTop="true"
-                android:textSize="30sp"
+                android:textSize="18sp"
 
                 />
             <LinearLayout
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:text="Price: "
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
@@ -58,45 +58,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="3dp"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:id="@+id/product_price_b"
-                    android:textStyle="italic"
+
+                    android:textStyle="italic|bold"
                     android:layout_toRightOf="@+id/price_label"
                     android:textColor="@color/colorPrimaryDark"
                     />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_below="@+id/rlbasket1"
 
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="Category: "
-                    android:textStyle="bold"
-                    android:id="@+id/cat_label_b"
-
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:textSize="20sp"
-                    android:id="@+id/product_cat_b"
-                    android:textStyle="italic"
-                    android:layout_toRightOf="@+id/cat_label"
-                    android:textColor="@color/colorPrimaryDark"
-                    />
-            </LinearLayout>
 
 
 

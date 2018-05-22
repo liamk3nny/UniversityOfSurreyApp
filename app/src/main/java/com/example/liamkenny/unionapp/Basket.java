@@ -7,9 +7,13 @@ public class Basket {
     //TODO: Add validations w/ try & exceptions
 
     private ArrayList<Basket_Product> basket_Items;
+    private double totalPrice = 0;
 
     public Basket() {
         this.basket_Items = new ArrayList<Basket_Product>();
+        for(Basket_Product bp: basket_Items){
+            totalPrice += bp.getTotalCost();
+        }
     }
     public Basket(ArrayList<Basket_Product> items) {
         this.basket_Items = items;
@@ -23,6 +27,11 @@ public class Basket {
         return basket_Items;
     }
 
+    public void recalculateTotalPrice(){
+        for(Basket_Product bp: basket_Items){
+            totalPrice += bp.getTotalCost();
+        }
+    }
 
     public void addItem(Basket_Product item) {
         this.getBasket_Items().add(item);

@@ -24,21 +24,7 @@
             android:textStyle="italic|bold" />
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:id="@+id/ClearBasketButton"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_toRightOf="@id/basketTitle"
-            android:text="Clear Basket"
-            android:background="@color/white"
-            android:layout_centerHorizontal="true"
-            android:padding="15dp"
-            android:innerRadius="0dp"
-            android:shape="ring"
-            android:thicknessRatio="1.9"
-            />
+
 
 
         <android.support.v7.widget.RecyclerView

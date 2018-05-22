@@ -1,6 +1,5 @@
 package com.example.liamkenny.unionapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -36,8 +33,6 @@ public class BasketFragment extends Fragment {
             .setTimestampsInSnapshotsEnabled(true)
             .build();
 
-    private Button clrButton;
-
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
     }
@@ -60,20 +55,9 @@ public class BasketFragment extends Fragment {
         rootView.setTag(TAG);
 
         // BEGIN_INCLUDE(initializeRecyclerView)
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.basketRecycler);
+        mRecyclerView = rootView.findViewById(R.id.basketRecycler);
 
-        clrButton = (Button) rootView.findViewById(R.id.ClearBasketButton);
 
-        clrButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Activity activity = getActivity();
-                Toast.makeText(activity,"Clearing basket!",Toast.LENGTH_SHORT).show();
-                products.clear();
-                mAdapter.notifyDataSetChanged();
-
-            }
-        });
 
         mLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -83,8 +67,14 @@ public class BasketFragment extends Fragment {
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         Product prod = new Product("1", "Product 1", "Hoodie", 55.44);
+        Product prod2 = new Product("2", "Product 2", "Hoodie", 5);
+        Product prod3 = new Product("3", "Product 3", "Hoodie", 39);
         Basket_Product bp = new Basket_Product(prod, 1);
+        Basket_Product bp1 = new Basket_Product(prod2, 1);
+        Basket_Product bp2 = new Basket_Product(prod3, 1);
         products.add(bp);
+        products.add(bp1);
+        products.add(bp2);
         mAdapter.notifyDataSetChanged();
         return rootView;
     }

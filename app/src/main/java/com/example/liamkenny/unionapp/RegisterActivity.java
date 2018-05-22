@@ -71,12 +71,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupView(){
-        mName = (EditText)findViewById(R.id.etName);
-        mURN = (EditText)findViewById(R.id.etUsername);
-        mPassword1 = (EditText)findViewById(R.id.etPassword1);
-        mPassword2 = (EditText)findViewById(R.id.etPassword2);
-        mRegister = (Button)findViewById(R.id.btnRegister);
-        mAccount = (TextView)findViewById(R.id.tvAccount);
+        mName = findViewById(R.id.etName);
+        mURN = findViewById(R.id.etUsername);
+        mPassword1 = findViewById(R.id.etPassword1);
+        mPassword2 = findViewById(R.id.etPassword2);
+        mRegister = findViewById(R.id.btnRegister);
+        mAccount = findViewById(R.id.tvAccount);
     }
 
     private boolean validate(){

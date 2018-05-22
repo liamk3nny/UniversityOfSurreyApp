@@ -81,10 +81,10 @@ public class LoginActivity extends AppCompatActivity {
         Method used to setup views when activity is loaded
      */
     private void setupView(){
-        mURN = (EditText) findViewById(R.id.etUsername);
-        mPassword = (EditText)findViewById(R.id.etPassword);
-        mLogin = (Button)findViewById(R.id.btnLogin);
-        mRegister = (TextView)findViewById(R.id.tvRegister);
+        mURN = findViewById(R.id.etUsername);
+        mPassword = findViewById(R.id.etPassword);
+        mLogin = findViewById(R.id.btnLogin);
+        mRegister = findViewById(R.id.tvRegister);
     }
 
     /*

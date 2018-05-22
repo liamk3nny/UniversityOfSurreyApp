@@ -22,9 +22,9 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
 
         public MyViewHolder(View view){
             super(view);
-            name = (TextView) view.findViewById(R.id.product_name);
-            price = (TextView) view.findViewById(R.id.product_price);
-            category = (TextView) view.findViewById(R.id.product_cat);
+            name = view.findViewById(R.id.product_name);
+            price = view.findViewById(R.id.product_price);
+            category = view.findViewById(R.id.product_cat);
 
 
         }

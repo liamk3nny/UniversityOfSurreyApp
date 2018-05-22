@@ -70,10 +70,10 @@ public class ShopFragment extends Fragment {
         rootView.setTag(TAG);
 
         // BEGIN_INCLUDE(initializeRecyclerView)
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.shopRecycler);
-        basketButton = (ImageButton) rootView.findViewById(R.id.basketButton);
+        mRecyclerView = rootView.findViewById(R.id.shopRecycler);
+        basketButton = rootView.findViewById(R.id.basketButton);
 
-        spinner = (Spinner) rootView.findViewById(R.id.FilterSpinner);
+        spinner = rootView.findViewById(R.id.FilterSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter_spinner_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -104,7 +104,7 @@ public class ShopFragment extends Fragment {
                 Toast.makeText(activity, "Replacing shop fragment with basket fragment!", Toast.LENGTH_SHORT).show();
 
                 try {
-                    fragment = (Fragment) BasketFragment.class.newInstance();
+                    fragment = BasketFragment.class.newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

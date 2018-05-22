@@ -45,7 +45,7 @@ public class UpcomingEventsFragment extends Fragment {
         rootView.setTag(TAG);
 
         // BEGIN_INCLUDE(initializeRecyclerView)
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.event_recycler_view);
+        mRecyclerView = rootView.findViewById(R.id.event_recycler_view);
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how

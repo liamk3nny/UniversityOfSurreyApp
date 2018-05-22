@@ -11,20 +11,22 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.MyViewHolder>{
+
     private Basket basket;
     private ArrayList<Basket_Product> basket_items;
+
     private Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         private TextView name;
         private TextView price;
-        private TextView category;
+
 
         public MyViewHolder(View view){
             super(view);
-            name = (TextView) view.findViewById(R.id.product_name_b);
-            price = (TextView) view.findViewById(R.id.product_price_b);
-            category = (TextView) view.findViewById(R.id.product_cat_b);
+            name = view.findViewById(R.id.product_name_b);
+            price = view.findViewById(R.id.product_price_b);
+
         }
 
     }
@@ -44,7 +46,7 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
         final Basket_Product prod = basket_items.get(position);
         holder.name.setText(prod.getProduct().getProductName());
         holder.price.setText("£" + Double.toString(prod.getProduct().getProductPrice()));
-        holder.category.setText(prod.getProduct().getProductType());
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -57,6 +59,10 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
             }
         });
 
+    }
+
+    public Basket getBasket(){
+        return this.basket;
     }
 
     @Override
