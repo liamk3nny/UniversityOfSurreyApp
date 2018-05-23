@@ -2,6 +2,7 @@ package com.example.liamkenny.unionapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,10 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
 
     }
 
-    public BasketItemAdapter(ArrayList<Basket_Product> basket_is){this.basket_items = basket_is;}
+    public BasketItemAdapter(ArrayList<Basket_Product> basket_is){
+        this.basket_items = basket_is;
+        this.basket = new Basket(basket_is);
+    }
 
 
     @Override
@@ -42,10 +46,12 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Basket_Product prod = basket_items.get(position);
         holder.name.setText(prod.getProduct().getProductName());
         holder.price.setText("£" + Double.toString(prod.getProduct().getProductPrice()));
+
+
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -53,9 +59,20 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
 
                 Toast.makeText(context, "Removed " + prod.getProduct().getProductName() + " from basket.", Toast.LENGTH_SHORT).show();
                 //TODO add to basket on click
-                basket_items.remove(position);
+                basket.removeItem(position);
+
+                Log.d("BASKET_FRAGMENT", "Basket COST = : " + basket.getTotalPrice());
+                basket_items = basket.getBasket_Items();
+                basket.recalculateTotalPrice();
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, basket_items.size());
                 notifyDataSetChanged();
+                BasketFragment.setNewPrice(basket.getTotalPrice());
+                Log.d("BASKET_FRAGMENT", "Basket size = : " + basket_items.size());
+
+
                 return true;
+
             }
         });
 

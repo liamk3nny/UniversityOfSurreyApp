@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class BasketFragment extends Fragment {
 
-
+    private static TextView totalPriceView;
     private Basket basket;
     private ArrayList<Basket_Product> products = new ArrayList<Basket_Product>();
 
@@ -54,6 +55,9 @@ public class BasketFragment extends Fragment {
                 .inflate(R.layout.fragment_basket, container, false);
         rootView.setTag(TAG);
 
+
+
+        totalPriceView = rootView.findViewById(R.id.TotalPriceTV);
         // BEGIN_INCLUDE(initializeRecyclerView)
         mRecyclerView = rootView.findViewById(R.id.basketRecycler);
 
@@ -66,9 +70,9 @@ public class BasketFragment extends Fragment {
         mAdapter = new BasketItemAdapter(products);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
-        Product prod = new Product("1", "Product 1", "Hoodie", 55.44);
+        Product prod = new Product("1", "Product 1", "Hoodie", 10);
         Product prod2 = new Product("2", "Product 2", "Hoodie", 5);
-        Product prod3 = new Product("3", "Product 3", "Hoodie", 39);
+        Product prod3 = new Product("3", "Product 3", "Hoodie", 30);
         Basket_Product bp = new Basket_Product(prod, 1);
         Basket_Product bp1 = new Basket_Product(prod2, 1);
         Basket_Product bp2 = new Basket_Product(prod3, 1);
@@ -76,6 +80,9 @@ public class BasketFragment extends Fragment {
         products.add(bp1);
         products.add(bp2);
         mAdapter.notifyDataSetChanged();
+        basket = new Basket(products);
+        this.setNewPrice(basket.getTotalPrice());
+
         return rootView;
     }
 
@@ -99,6 +106,10 @@ public class BasketFragment extends Fragment {
         // Save currently selected layout manager.
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public static void setNewPrice(double price){
+        totalPriceView.setText("£" + String.valueOf(price));
     }
 
 

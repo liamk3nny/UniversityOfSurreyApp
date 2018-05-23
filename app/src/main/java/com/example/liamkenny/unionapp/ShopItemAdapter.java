@@ -2,6 +2,7 @@ package com.example.liamkenny.unionapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
             public boolean onLongClick(View view) {
 
                 Toast.makeText(context, "Added " + prod.getProductName() + " to basket." , Toast.LENGTH_SHORT).show();
+                Log.d("ADAPTER_SHOP", "onLongClick: click item: " +position);
                 //TODO add to basket on click
                 return true;
             }
