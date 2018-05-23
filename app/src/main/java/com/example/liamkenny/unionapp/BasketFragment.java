@@ -92,7 +92,7 @@ public class BasketFragment extends Fragment {
         Log.d(TAG, "Products.size(): " + products.size());
         mAdapter = new BasketItemAdapter(products, this);
         mRecyclerView.setAdapter(mAdapter);
-        
+
 
 
         this.setNewPrice(basket.getTotalPrice());

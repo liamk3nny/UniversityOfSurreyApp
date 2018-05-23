@@ -66,8 +66,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/TotalPriceTV"
-            android:text="FIND OUT TOTAL PRICE"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/basketTitle"
+            android:text="Press Here To Checkout!"
             android:id="@+id/CHECKOUT_BUTTON"/>
 
 
