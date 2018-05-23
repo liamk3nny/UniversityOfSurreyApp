@@ -20,8 +20,9 @@ import java.util.ArrayList;
 public class BasketFragment extends Fragment {
 
     private  TextView totalPriceView;
+    private dbHelper database;
     private Basket basket;
-    private ArrayList<Basket_Product> products = new ArrayList<Basket_Product>();
+    private ArrayList<Basket_Product> products;
 
 
     private static final String TAG = "BasketFragment";
@@ -82,22 +83,17 @@ public class BasketFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new BasketItemAdapter(products, this);
+
         // Set CustomAdapter as the adapter for RecyclerView.
+
+        database = dbHelper.getInstance(getActivity());
+        basket = database.extractBasketFromDB();
+        products = basket.getBasket_Items();
+        Log.d(TAG, "Products.size(): " + products.size());
+        mAdapter = new BasketItemAdapter(products, this);
         mRecyclerView.setAdapter(mAdapter);
+        
 
-
-        Product prod = new Product("1", "Product 1", "Hoodie", 10);
-        Product prod2 = new Product("2", "Product 2", "Hoodie", 5);
-        Product prod3 = new Product("3", "Product 3", "Hoodie", 30);
-        Basket_Product bp = new Basket_Product(prod, 1);
-        Basket_Product bp1 = new Basket_Product(prod2, 1);
-        Basket_Product bp2 = new Basket_Product(prod3, 1);
-        products.add(bp);
-        products.add(bp1);
-        products.add(bp2);
-        mAdapter.notifyDataSetChanged();
-        basket = new Basket(products);
 
         this.setNewPrice(basket.getTotalPrice());
 

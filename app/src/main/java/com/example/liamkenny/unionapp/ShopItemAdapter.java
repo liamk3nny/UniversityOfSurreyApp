@@ -15,13 +15,14 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
 
     private ArrayList<Product> productsList;
     private Context context;
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView price;
         private TextView category;
 
 
-        public MyViewHolder(View view){
+        public MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.product_name);
             price = view.findViewById(R.id.product_price);
@@ -31,29 +32,40 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         }
     }
 
-    public ShopItemAdapter(ArrayList<Product> prods){
+    public ShopItemAdapter(ArrayList<Product> prods) {
         this.productsList = prods;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_item_row, parent, false);
         return new MyViewHolder(itemView);
     }
+
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position){
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Product prod = productsList.get(position);
         holder.name.setText(prod.getProductName());
         holder.price.setText("£" + Double.toString(prod.getProductPrice()));
         holder.category.setText(prod.getProductType());
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
-                Toast.makeText(context, "Added " + prod.getProductName() + " to basket." , Toast.LENGTH_SHORT).show();
-                Log.d("ADAPTER_SHOP", "onLongClick: click item: " +position);
-                //TODO add to basket on click
+
+                dbHelper db = dbHelper.getInstance(context);
+                
+                if (db.isProductInDB(prod)) {
+                    Toast.makeText(context, "Product in DB", Toast.LENGTH_SHORT).show();
+                    db.updateProductQuantity(prod, true);
+                } else if(!db.isProductInDB(prod)){
+                    Log.d("SHOP", "onLongClick: item added to DB ");
+                    Toast.makeText(context, "Product added to DB", Toast.LENGTH_SHORT).show();
+                    db.addProductToBasket(prod);
+
+                }
+
                 return true;
             }
         });
@@ -61,7 +73,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return productsList.size();
     }
 
