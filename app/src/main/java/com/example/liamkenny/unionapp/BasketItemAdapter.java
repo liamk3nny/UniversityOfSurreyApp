@@ -15,6 +15,8 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
 
     private Basket basket;
     private ArrayList<Basket_Product> basket_items;
+    private BasketFragment b;
+
 
     private Context context;
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -32,9 +34,10 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
 
     }
 
-    public BasketItemAdapter(ArrayList<Basket_Product> basket_is){
+    public BasketItemAdapter(ArrayList<Basket_Product> basket_is, BasketFragment b){
         this.basket_items = basket_is;
         this.basket = new Basket(basket_is);
+        this.b = b;
     }
 
 
@@ -64,12 +67,13 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
                 Log.d("BASKET_FRAGMENT", "Basket COST = : " + basket.getTotalPrice());
                 basket_items = basket.getBasket_Items();
                 basket.recalculateTotalPrice();
+
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, basket_items.size());
                 notifyDataSetChanged();
-                BasketFragment.setNewPrice(basket.getTotalPrice());
+                b.setNewPrice(basket.getTotalPrice());
                 Log.d("BASKET_FRAGMENT", "Basket size = : " + basket_items.size());
-
+                b.updateBasket(basket);
 
                 return true;
 

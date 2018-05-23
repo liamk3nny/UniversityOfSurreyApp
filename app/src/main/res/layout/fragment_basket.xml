@@ -63,6 +63,14 @@
             android:layout_marginTop="20dp"/>
 
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TotalPriceTV"
+            android:text="FIND OUT TOTAL PRICE"
+            android:id="@+id/CHECKOUT_BUTTON"/>
+
+
 
 
     </RelativeLayout>
