@@ -19,7 +19,7 @@
             android:paddingBottom="40dp"
             android:text="USSU SHOP"
             android:textColor="@color/white"
-            android:textSize="50sp"
+            android:textSize="45sp"
             android:textStyle="italic|bold" />
 
         <ImageButton
