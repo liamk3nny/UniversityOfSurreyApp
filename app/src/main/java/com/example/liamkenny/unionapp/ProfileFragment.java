@@ -3,10 +3,26 @@ package com.example.liamkenny.unionapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -28,6 +44,14 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+            .setTimestampsInSnapshotsEnabled(true)
+            .build();
+    private String userID;
+    private TextView nav_username;
+    private TextView nav_email;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -58,13 +82,50 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+        //firebase user setup
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = firebaseAuth.getCurrentUser();
+        userID = fbUser.getUid();
+
+        //Setup Firestore settings
+        db.setFirestoreSettings(settings);
+
+        nav_username = (TextView) view.findViewById(R.id.profile_email);
+        nav_email = (TextView) view.findViewById(R.id.profile_name);
+
+        DocumentReference docRef = db.collection("Student").document(userID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Map userInfo = document.getData();
+                        String username = userInfo.get("Forename") + " " + userInfo.get("Surname");
+                        String email = userInfo.get("Username") + "@surrey.ac.uk";
+                        nav_username.setText(username);
+                        nav_email.setText(email);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         View headerView = drawer.getHeaderView(0);
         final TextView nav_username = (TextView) headerView.findViewById(R.id.user_name);
         final TextView nav_email = (TextView) headerView.findViewById(R.id.user_email);
-        Log.d("Navbar", "intialiing nav bar");
+        
         DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
