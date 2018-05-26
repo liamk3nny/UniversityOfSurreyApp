@@ -2,8 +2,10 @@ package com.example.liamkenny.unionapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     //Hamburger Menu items
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-    private FirebaseAuth firebaseAuth;
     private NavigationView drawer;
     private LinearLayout profileTab;
     private ImageView profilePic;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Hamburger menu items
-        NavigationView drawer = (NavigationView) findViewById(R.id.navigation_view);
+        drawer = (NavigationView) findViewById(R.id.navigation_view);
         View headerView = drawer.getHeaderView(0);
         final TextView nav_username = (TextView) headerView.findViewById(R.id.user_name);
         final TextView nav_email = (TextView) headerView.findViewById(R.id.user_email);
@@ -149,7 +150,31 @@ public class MainActivity extends AppCompatActivity {
         profileTab = (LinearLayout) findViewById(R.id.profile_layout);
         profilePic = (ImageView) findViewById(R.id.imgProfile);
 
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = null;
+                Class fragmentClass = ProfileFragment.class;
 
+                if (fragmentClass != null) {
+
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+                    fragmentTransaction.add(R.id.fragment_layout, fragment);
+                    fragmentTransaction.addToBackStack(fragment.toString());
+                    fragmentTransaction.commit();
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
     }
 
     /*
@@ -176,10 +201,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.home:
                 activity = "home";
-                break;
-
-            case R.id.profile:
-                fragmentClass = ProfileFragment.class;
                 break;
 
             case R.id.shop:
@@ -234,15 +255,16 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(fragment.toString());
             fragmentTransaction.commit();
 
+            unCheckAllMenuItems(drawer.getMenu());
+
             item.setChecked(true);
 
-
-            Toast.makeText(this, "Switching Fragment.", Toast.LENGTH_SHORT).show();
         } else if (activity == "signout") {
             confSignout();
         } else if (activity == "home") {
-            //Intent homeIntent = new Intent(MainActivity.this, MainActivity.class);
-            //startActivity(homeIntent);
+            Intent homeIntent = new Intent(this, MainActivity.class);
+            startActivity(homeIntent);
+
 
         }
         drawerLayout.closeDrawers();
@@ -312,16 +334,21 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    /*
+
     //TODO: find a way to uncheck items in the menu
     //drawer isnt initialised...
-    public void uncheckItems(){
-        int size = drawer.getMenu().size();
+    private void unCheckAllMenuItems(@NonNull final Menu menu) {
+        int size = menu.size();
         for (int i = 0; i < size; i++) {
-            drawer.getMenu().getItem(i).setChecked(false);
+            final MenuItem item = menu.getItem(i);
+            if(item.hasSubMenu()) {
+                // Un check sub menu items
+                unCheckAllMenuItems(item.getSubMenu());
+            } else {
+                item.setChecked(false);
+            }
         }
     }
-    */
 
 
 }
