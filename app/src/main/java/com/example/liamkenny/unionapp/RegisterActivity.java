@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 public class RegisterActivity extends AppCompatActivity {
 
 
-    private static final String TAG = "tag";
+    private static final String TAG = "Register Activity";
     private EditText mFirstname;
     private EditText mSurname;
     private EditText mUsername;

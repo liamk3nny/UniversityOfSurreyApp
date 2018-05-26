@@ -32,9 +32,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
                 }
             });
-            eventName = (TextView) v.findViewById(R.id.event_name);
-            eventInfo = (TextView) v.findViewById(R.id.event_info);
-            eventDate = (TextView) v.findViewById(R.id.event_date);
+            eventName = v.findViewById(R.id.event_name);
+            eventInfo = v.findViewById(R.id.event_info);
+            eventDate = v.findViewById(R.id.event_date);
 
         }
 

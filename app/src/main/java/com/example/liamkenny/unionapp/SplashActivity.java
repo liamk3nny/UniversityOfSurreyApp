@@ -15,7 +15,7 @@ private ImageView logo;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        logo = (ImageView)findViewById(R.id.splash_logo);
+        logo = findViewById(R.id.splash_logo);
 
         Animation transition = AnimationUtils.loadAnimation(this, R.anim.splash_transition);
         logo.startAnimation(transition);

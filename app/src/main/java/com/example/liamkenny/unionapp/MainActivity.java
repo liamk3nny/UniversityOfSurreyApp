@@ -2,9 +2,7 @@ package com.example.liamkenny.unionapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Handler;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -48,10 +46,11 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "tag";
+    private static final String TAG = "MainActivity";
     //Hamburger Menu items
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
+    private FirebaseAuth firebaseAuth;
     private NavigationView drawer;
     private LinearLayout profileTab;
     private ImageView profilePic;
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         View headerView = drawer.getHeaderView(0);
         final TextView nav_username = (TextView) headerView.findViewById(R.id.user_name);
         final TextView nav_email = (TextView) headerView.findViewById(R.id.user_email);
-        
+
         DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -181,8 +180,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.profile:
                 fragmentClass = ProfileFragment.class;
+                break;
 
             case R.id.shop:
+                fragmentClass = ShopFragment.class;
                 break;
 
             case R.id.events:
@@ -225,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             //uncheckItems();
-
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -310,10 +310,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alert.show();
-    }
-
-    public void getStudentDoc() {
-
     }
 
     /*
