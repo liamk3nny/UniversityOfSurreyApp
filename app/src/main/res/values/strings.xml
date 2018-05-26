@@ -61,6 +61,8 @@ I hope you have a fantastic year here at Surrey, and I'm excited to be a part of
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_name">User Name</string>
+    <string name="example_email">aa00000@surrey.ac.uk</string>
 
 
 </resources>

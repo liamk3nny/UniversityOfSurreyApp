@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="User Name"
+        android:text="@string/user_name"
         android:textColor="@color/offWhite"
         android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
         android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="aa00000@surrey.ac.uk"
+        android:text="@string/example_email"
         android:textColor="@color/offWhite" />
 
 
