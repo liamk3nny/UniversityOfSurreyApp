@@ -333,10 +333,7 @@ public class MainActivity extends AppCompatActivity {
         });
         alert.show();
     }
-
-
-    //TODO: find a way to uncheck items in the menu
-    //drawer isnt initialised...
+    
     private void unCheckAllMenuItems(@NonNull final Menu menu) {
         int size = menu.size();
         for (int i = 0; i < size; i++) {
