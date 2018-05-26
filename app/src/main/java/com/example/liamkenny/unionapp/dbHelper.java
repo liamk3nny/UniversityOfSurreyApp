@@ -103,7 +103,7 @@ public class dbHelper extends SQLiteOpenHelper {
         Cursor cr = db.rawQuery(sql, null);
 
         if(!cr.moveToFirst() || cr.getCount() == 0){    //return null if results are empty
-            basket = new Basket(new ArrayList<Basket_Product>(null));
+            basket = new Basket();
             return basket;
         }
         do{

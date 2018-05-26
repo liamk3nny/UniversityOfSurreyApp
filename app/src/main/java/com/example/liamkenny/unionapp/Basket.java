@@ -9,6 +9,13 @@ public class Basket {
     private ArrayList<Basket_Product> basket_Items;
     private double totalPrice = 0;
 
+    public Basket(){
+
+        this.basket_Items = new ArrayList<Basket_Product>();
+        this.totalPrice = 0;
+
+    }
+
     public Basket(ArrayList<Basket_Product> items) {
         this.basket_Items = items;
         for(Basket_Product bp: this.basket_Items){
