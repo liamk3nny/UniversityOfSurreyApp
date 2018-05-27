@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView eventImage;
         private final TextView eventName;
         private final TextView eventInfo;
         private final TextView eventDate;
@@ -34,6 +36,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             eventName = v.findViewById(R.id.event_name);
             eventInfo = v.findViewById(R.id.event_info);
             eventDate = v.findViewById(R.id.event_date);
+            eventImage = v.findViewById(R.id.event_photo);
 
         }
 
@@ -49,12 +52,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             return eventDate;
         }
 
+        public ImageView getEventImage() { return  eventImage; }
+
     }
 
     public EventsAdapter(String[] eventNames, String[] eventInfo, String[] eventDates) {
         mEventNames = eventNames;
         mEventInfo = eventInfo;
         mEventDate = eventDates;
+        //mEventImage = eventImage;
     }
 
 
