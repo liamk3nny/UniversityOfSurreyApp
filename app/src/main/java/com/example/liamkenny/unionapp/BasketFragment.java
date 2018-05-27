@@ -72,7 +72,7 @@ public class BasketFragment extends Fragment {
     private String email;
     private String username;
     private Fragment fragment;
-
+    private TextView isEmpty;
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
     }
@@ -94,7 +94,7 @@ public class BasketFragment extends Fragment {
                 .inflate(R.layout.fragment_basket, container, false);
         rootView.setTag(TAG);
 
-
+        isEmpty = rootView.findViewById(R.id.ISBASKETEMPTY);
 
         totalPriceView = rootView.findViewById(R.id.TotalPriceTV);
         // BEGIN_INCLUDE(initializeRecyclerView)
@@ -152,6 +152,12 @@ public class BasketFragment extends Fragment {
 
         database = dbHelper.getInstance(getActivity());
         basket = database.extractBasketFromDB();
+
+        if(basket.getBasket_Items().isEmpty()){
+            isEmpty.setVisibility(View.VISIBLE);
+        }else{
+            isEmpty.setVisibility(View.GONE);
+        }
         products = basket.getBasket_Items();
         mAdapter = new BasketItemAdapter(products, this);
         mRecyclerView.setAdapter(mAdapter);
@@ -340,6 +346,12 @@ public class BasketFragment extends Fragment {
 
     public void updateBasket(Basket b){
         this.basket = b;
+        if(basket.getBasket_Items().isEmpty()){
+            isEmpty.setVisibility(View.VISIBLE);
+        }else{
+            isEmpty.setVisibility(View.GONE);
+        }
+
     }
 
     public double round(double value, int places) {

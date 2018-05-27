@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TotalPriceLabel"
-            android:layout_below="@id/basketTitle"
+            android:layout_below="@id/ISBASKETEMPTY"
             android:text="Total Price: "
             android:textSize="24sp"
             android:textColor="@color/white"
@@ -56,10 +56,22 @@
             android:layout_height="wrap_content"
             android:id="@+id/TotalPriceTV"
             android:layout_toRightOf="@id/TotalPriceLabel"
-            android:layout_below="@id/basketTitle"
+            android:layout_below="@id/ISBASKETEMPTY"
             android:textSize="24sp"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ISBASKETEMPTY"
+            android:layout_below="@id/basketTitle"
+            android:text="Your Basket is empty"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"/>
 
 
