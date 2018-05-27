@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -65,6 +67,7 @@ public class BasketFragment extends Fragment {
     private String userID;
     private String email;
     private String username;
+    private Fragment fragment;
 
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
@@ -123,13 +126,15 @@ public class BasketFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("user_email",email );
-                double time = System.currentTimeMillis();
-                db.collection("Order")
-                        .add(data);
+                if(basket.getBasket_Items().isEmpty()){
+                    Toast.makeText(getActivity(), "Your Basket is currently empty", Toast.LENGTH_LONG).show();
+                }else{
+                    requestPayment(view);
+                }
 
-                requestPayment(view);
+
+
+
             }
         });
 
@@ -161,7 +166,7 @@ public class BasketFragment extends Fragment {
                     public void onComplete(Task<Boolean> task) {
                         try {
                             boolean result = task.getResult(ApiException.class);
-                            Log.d(TAG, "onComplete: IS READY TO PAY");
+
 
                         } catch (ApiException exception) {
                             // Process error
@@ -173,7 +178,7 @@ public class BasketFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult: STAGE GOT HERE");
+
         switch (requestCode) {
             case LOAD_PAYMENT_DATA_REQUEST_CODE:
                 switch (resultCode) {
@@ -209,7 +214,7 @@ public class BasketFragment extends Fragment {
         TransactionInfo transaction = PaymentsUtil.createTransaction(price);
         PaymentDataRequest request = PaymentsUtil.createPaymentDataRequest(transaction);
         Task<PaymentData> futurePaymentData = mPaymentsClient.loadPaymentData(request);
-        Log.d(TAG, "GOT TO STAGE 1: ");
+
 
         // Since loadPaymentData may show the UI asking the user to select a payment method, we use
         // AutoResolveHelper to wait for the user interacting with it. Once completed,
@@ -222,7 +227,7 @@ public class BasketFragment extends Fragment {
         // requested information, such as billing and shipping address.
         //
 
-        Log.d(TAG, "handlePaymentSuccess: GOT TO STAGE 2");
+
         // Refer to your processor's documentation on how to proceed from here.
         PaymentMethodToken token = paymentData.getPaymentMethodToken();
 
@@ -233,9 +238,9 @@ public class BasketFragment extends Fragment {
             // token will only consist of "examplePaymentMethodToken".
             if (token.getToken().equals("examplePaymentMethodToken")) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                        .setTitle("Warning")
-                        .setMessage("Gateway name set to \"example\" - please modify " +
-                                "Constants.java and replace it with your own gateway.")
+                        .setTitle("Thank you for your order")
+                        .setMessage("Payment processed: thank you for your order"
+                        )
                         .setPositiveButton("OK", null)
                         .create();
                 alertDialog.show();
@@ -244,8 +249,33 @@ public class BasketFragment extends Fragment {
             String billingName = paymentData.getCardInfo().getBillingAddress().getName();
             Toast.makeText(getActivity(), getString(R.string.payments_show_name, billingName), Toast.LENGTH_LONG).show();
 
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("user_email",email );
+            double time = System.currentTimeMillis();
+            db.collection("Order")
+                    .add(data);
+
             // Use token.getToken() to get the token string.
             Log.d("PaymentData", "PaymentMethodToken received");
+            Activity activity = getActivity();
+
+            basket.clearBasket();
+            database.clearAll();
+
+            try {
+                fragment = ShopFragment.class.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //uncheckItems();
+            FragmentManager fragmentManager = getFragmentManager();
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.fragment_layout, fragment);
+            fragmentTransaction.addToBackStack(fragment.toString());
+            fragmentTransaction.commit();
+
         }
     }
 
