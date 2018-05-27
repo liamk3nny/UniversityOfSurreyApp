@@ -1,6 +1,5 @@
 package com.example.liamkenny.unionapp;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

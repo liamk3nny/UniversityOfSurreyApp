@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class BasketFragment extends Fragment {
 
-    private  TextView totalPriceView;
+    private TextView totalPriceView;
     private dbHelper database;
     private Basket basket;
     private ArrayList<Basket_Product> products;
@@ -73,6 +73,7 @@ public class BasketFragment extends Fragment {
     private String username;
     private Fragment fragment;
     private TextView isEmpty;
+
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
     }
@@ -81,8 +82,6 @@ public class BasketFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db.setFirestoreSettings(settings);
-
-
 
 
     }
@@ -130,13 +129,11 @@ public class BasketFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(basket.getBasket_Items().isEmpty()){
+                if (basket.getBasket_Items().isEmpty()) {
                     Toast.makeText(getActivity(), "Your Basket is currently empty", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     requestPayment(view);
                 }
-
-
 
 
             }
@@ -153,9 +150,9 @@ public class BasketFragment extends Fragment {
         database = dbHelper.getInstance(getActivity());
         basket = database.extractBasketFromDB();
 
-        if(basket.getBasket_Items().isEmpty()){
+        if (basket.getBasket_Items().isEmpty()) {
             isEmpty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             isEmpty.setVisibility(View.GONE);
         }
         products = basket.getBasket_Items();
@@ -176,9 +173,9 @@ public class BasketFragment extends Fragment {
                     public void onComplete(Task<Boolean> task) {
                         try {
                             boolean result = task.getResult(ApiException.class);
-                            if (result){
+                            if (result) {
                                 checkoutButton.setText("Pay with GooglePay");
-                            }else{
+                            } else {
                                 checkoutButton.setText("GooglePay unavailable");
                             }
 
@@ -189,7 +186,6 @@ public class BasketFragment extends Fragment {
                         }
                     }
                 });
-        ;
     }
 
     @Override
@@ -224,8 +220,8 @@ public class BasketFragment extends Fragment {
 
         // The price provided to the API should include taxes and shipping.
         // This price is not displayed to the user.
-        totalPrice = (long)basket.getTotalPrice() * 1000000;
-        String price = PaymentsUtil.microsToString(totalPrice*1000000);
+        totalPrice = (long) basket.getTotalPrice() * 1000000;
+        String price = PaymentsUtil.microsToString(totalPrice * 1000000);
 
         TransactionInfo transaction = PaymentsUtil.createTransaction(price);
         PaymentDataRequest request = PaymentsUtil.createPaymentDataRequest(transaction);
@@ -238,6 +234,7 @@ public class BasketFragment extends Fragment {
         AutoResolveHelper.resolveTask(futurePaymentData, this.getActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
         checkoutButton.setClickable(true);
     }
+
     private void handlePaymentSuccess(PaymentData paymentData) {
         // PaymentMethodToken contains the payment information, as well as any additional
         // requested information, such as billing and shipping address.
@@ -254,9 +251,9 @@ public class BasketFragment extends Fragment {
             // token will only consist of "examplePaymentMethodToken".
             if (token.getToken().equals("examplePaymentMethodToken")) {
                 String prods = "    ";
-                for(Basket_Product p: basket.getBasket_Items()){
+                for (Basket_Product p : basket.getBasket_Items()) {
                     prods += "\n    ";
-                    prods += p.getProduct().getProductName() + ": £" + round(p.getProduct().getProductPrice(),2);
+                    prods += p.getProduct().getProductName() + ": £" + round(p.getProduct().getProductPrice(), 2);
                 }
 
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
@@ -279,14 +276,14 @@ public class BasketFragment extends Fragment {
             HashMap<String, Object> data = new HashMap<>();
             HashMap<String, Object> prods = new HashMap<>();
             int counter = 1;
-            for(Basket_Product b: basket.getBasket_Items()){
-                prods.put("Product " + counter, b.getProduct().getProductName() );
+            for (Basket_Product b : basket.getBasket_Items()) {
+                prods.put("Product " + counter, b.getProduct().getProductName());
                 counter++;
             }
 
-            data.put("user_email",email );
+            data.put("user_email", email);
             data.put("price", basket.getTotalPrice());
-            data.put("date", timeStamp );
+            data.put("date", timeStamp);
             data.put("items", prods);
             data.put("payment_method", "GooglePay");
 
@@ -325,6 +322,7 @@ public class BasketFragment extends Fragment {
         // WalletConstants.ERROR_CODE_* constants.
         Log.w("loadPaymentData failed", String.format("Error code: %d", statusCode));
     }
+
     public void setRecyclerViewLayoutManager() {
         int scrollPosition = 0;
 
@@ -347,16 +345,16 @@ public class BasketFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public  void setNewPrice(double price){
+    public void setNewPrice(double price) {
         price = this.round(price, 2);
         totalPriceView.setText("£" + String.valueOf(price));
     }
 
-    public void updateBasket(Basket b){
+    public void updateBasket(Basket b) {
         this.basket = b;
-        if(basket.getBasket_Items().isEmpty()){
+        if (basket.getBasket_Items().isEmpty()) {
             isEmpty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             isEmpty.setVisibility(View.GONE);
         }
 
@@ -369,13 +367,5 @@ public class BasketFragment extends Fragment {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-
-
-
-
-
-
-
-
 
 }

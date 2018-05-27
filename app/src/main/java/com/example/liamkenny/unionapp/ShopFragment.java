@@ -156,7 +156,6 @@ public class ShopFragment extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save currently selected layout manager.
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
-        savedInstanceState.putSerializable("Products", products);
         super.onSaveInstanceState(savedInstanceState);
     }
 

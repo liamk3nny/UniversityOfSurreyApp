@@ -100,8 +100,8 @@ public class ProfileFragment extends Fragment {
         //Setup Firestore settings
         db.setFirestoreSettings(settings);
 
-        nav_username = (TextView) view.findViewById(R.id.profile_email);
-        nav_email = (TextView) view.findViewById(R.id.profile_name);
+        nav_username = view.findViewById(R.id.profile_email);
+        nav_email = view.findViewById(R.id.profile_name);
 
         DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

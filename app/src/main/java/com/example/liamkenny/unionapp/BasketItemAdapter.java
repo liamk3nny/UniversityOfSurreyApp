@@ -2,7 +2,6 @@ package com.example.liamkenny.unionapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,8 +63,6 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
                 Toast.makeText(context, "Removed " + prod.getProduct().getProductName() + " from basket.", Toast.LENGTH_SHORT).show();
                 //TODO add to basket on click
                 basket.removeItem(position);
-
-                Log.d("BASKET_FRAGMENT", "Basket COST = : " + basket.getTotalPrice());
                 basket_items = basket.getBasket_Items();
                 basket.recalculateTotalPrice();
 
@@ -73,7 +70,6 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
                 notifyItemRangeChanged(position, basket_items.size());
                 notifyDataSetChanged();
                 b.setNewPrice(basket.getTotalPrice());
-                Log.d("BASKET_FRAGMENT", "Basket size = : " + basket_items.size());
                 b.updateBasket(basket);
                 db = dbHelper.getInstance(context);
                 db.updateProductQuantity(prod.getProduct(), false);
