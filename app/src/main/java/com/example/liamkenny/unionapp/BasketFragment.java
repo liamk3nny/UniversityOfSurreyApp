@@ -176,6 +176,11 @@ public class BasketFragment extends Fragment {
                     public void onComplete(Task<Boolean> task) {
                         try {
                             boolean result = task.getResult(ApiException.class);
+                            if (result){
+                                checkoutButton.setText("Pay with GooglePay");
+                            }else{
+                                checkoutButton.setText("GooglePay unavailable");
+                            }
 
 
                         } catch (ApiException exception) {
@@ -184,6 +189,7 @@ public class BasketFragment extends Fragment {
                         }
                     }
                 });
+        ;
     }
 
     @Override
@@ -250,15 +256,17 @@ public class BasketFragment extends Fragment {
                 String prods = "    ";
                 for(Basket_Product p: basket.getBasket_Items()){
                     prods += "\n    ";
-                    prods += p.getProduct().getProductName();
+                    prods += p.getProduct().getProductName() + ": £" + round(p.getProduct().getProductPrice(),2);
                 }
 
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                         .setTitle("Thank you for your order")
                         .setMessage("Payment processed: " + "\n"
-                                + "\n   Paid: £" + this.round(basket.getTotalPrice(), 2) + "\n"
-                                + "\n   Items as follows: \n"
-                                +   prods
+                                + prods
+                                + "\n"
+                                + "\n   Total Price: £" + this.round(basket.getTotalPrice(), 2) + "\n"
+
+
                         )
                         .setPositiveButton("OK", null)
                         .create();

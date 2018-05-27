@@ -85,13 +85,13 @@ public class ShopFragment extends Fragment {
 
                 if (spinner.getSelectedItem().equals("All Products")) {
                     if(firstLog) {
-                        Toast.makeText(getActivity(), "Filtering by: all items", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Displaying all items", Toast.LENGTH_SHORT).show();
                         firstLog = false;
                     }
                     setupList();
                 } else {
                     filterList(spinner.getSelectedItem().toString());
-                    Toast.makeText(getActivity(), spinner.getSelectedItem().toString() , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Displaying all " + spinner.getSelectedItem().toString().toLowerCase() , Toast.LENGTH_SHORT).show();
                 }
             }
 
