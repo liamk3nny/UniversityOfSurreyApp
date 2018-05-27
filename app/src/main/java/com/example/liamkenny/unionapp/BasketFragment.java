@@ -35,7 +35,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -239,14 +243,14 @@ public class BasketFragment extends Fragment {
             if (token.getToken().equals("examplePaymentMethodToken")) {
                 String prods = "    ";
                 for(Basket_Product p: basket.getBasket_Items()){
-                    prods += "\n";
+                    prods += "\n    ";
                     prods += p.getProduct().getProductName();
                 }
 
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                         .setTitle("Thank you for your order")
                         .setMessage("Payment processed: " + "\n"
-                                + "\n   Paid: £" + basket.getTotalPrice() + "\n"
+                                + "\n   Paid: £" + this.round(basket.getTotalPrice(), 2) + "\n"
                                 + "\n   Items as follows: \n"
                                 +   prods
                         )
@@ -257,9 +261,21 @@ public class BasketFragment extends Fragment {
 
             String billingName = paymentData.getCardInfo().getBillingAddress().getName();
             Toast.makeText(getActivity(), getString(R.string.payments_show_name, billingName), Toast.LENGTH_LONG).show();
-
+            String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
             HashMap<String, Object> data = new HashMap<>();
+            HashMap<String, Object> prods = new HashMap<>();
+            int counter = 1;
+            for(Basket_Product b: basket.getBasket_Items()){
+                prods.put("Product " + counter, b.getProduct().getProductName() );
+                counter++;
+            }
+
             data.put("user_email",email );
+            data.put("price", basket.getTotalPrice());
+            data.put("date", timeStamp );
+            data.put("items", prods);
+            data.put("payment_method", "GooglePay");
+
             double time = System.currentTimeMillis();
             db.collection("Order")
                     .add(data);
@@ -318,11 +334,20 @@ public class BasketFragment extends Fragment {
     }
 
     public  void setNewPrice(double price){
+        price = this.round(price, 2);
         totalPriceView.setText("£" + String.valueOf(price));
     }
 
     public void updateBasket(Basket b){
         this.basket = b;
+    }
+
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 
