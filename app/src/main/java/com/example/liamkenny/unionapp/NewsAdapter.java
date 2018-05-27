@@ -15,14 +15,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
 
     private String[] mNewsNames;
     private String[] mNewsInfo;
-    private String[] mNewsDate;
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView newsImage;
         private final TextView newsName;
         private final TextView newsInfo;
-        private final TextView newsDate;
 
         public ViewHolder(View v) {
             super(v);
@@ -35,7 +33,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
             });
             newsName = v.findViewById(R.id.news_name);
             newsInfo = v.findViewById(R.id.news_info);
-            newsDate = v.findViewById(R.id.news_date);
             newsImage = v.findViewById(R.id.news_photo);
 
         }
@@ -48,18 +45,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
             return newsInfo;
         }
 
-        public TextView getnewsDate() {
-            return newsDate;
-        }
-
         public ImageView getnewsImage() { return  newsImage; }
 
     }
 
-    public NewsAdapter(String[] newsNames, String[] newsInfo, String[] newsDates) {
+    public NewsAdapter(String[] newsNames, String[] newsInfo) {
         mNewsNames = newsNames;
         mNewsInfo = newsInfo;
-        mNewsDate = newsDates;
         //mNewsImage = newsImage;
     }
 
@@ -82,7 +74,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
         // with that element
         viewHolder.getnewsName().setText(mNewsNames[position]);
         viewHolder.getnewsInfo().setText(mNewsInfo[position]);
-        viewHolder.getnewsDate().setText(mNewsDate[position]);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
