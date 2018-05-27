@@ -237,9 +237,18 @@ public class BasketFragment extends Fragment {
             // If the gateway is set to example, no payment information is returned - instead, the
             // token will only consist of "examplePaymentMethodToken".
             if (token.getToken().equals("examplePaymentMethodToken")) {
+                String prods = "    ";
+                for(Basket_Product p: basket.getBasket_Items()){
+                    prods += "\n";
+                    prods += p.getProduct().getProductName();
+                }
+
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                         .setTitle("Thank you for your order")
-                        .setMessage("Payment processed: thank you for your order"
+                        .setMessage("Payment processed: " + "\n"
+                                + "\n   Paid: £" + basket.getTotalPrice() + "\n"
+                                + "\n   Items as follows: \n"
+                                +   prods
                         )
                         .setPositiveButton("OK", null)
                         .create();

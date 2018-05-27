@@ -56,11 +56,11 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                 dbHelper db = dbHelper.getInstance(context);
                 
                 if (db.isProductInDB(prod)) {
-                    Toast.makeText(context, "Product in DB", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Added " + prod.getProductName() + " to basket", Toast.LENGTH_SHORT).show();
                     db.updateProductQuantity(prod, true);
                 } else if(!db.isProductInDB(prod)){
 
-                    Toast.makeText(context, "Product added to DB", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Added " + prod.getProductName() + " to basket", Toast.LENGTH_SHORT).show();
                     db.addProductToBasket(prod);
 
                 }

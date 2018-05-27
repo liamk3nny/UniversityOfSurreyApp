@@ -48,7 +48,7 @@ public class ShopFragment extends Fragment {
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
-
+    private boolean firstLog = true;
 
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
@@ -65,6 +65,7 @@ public class ShopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        firstLog = true;
         View rootView = inflater
                 .inflate(R.layout.fragment_shop, container, false);
         rootView.setTag(TAG);
@@ -83,10 +84,14 @@ public class ShopFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if (spinner.getSelectedItem().equals("All Products")) {
-                    Toast.makeText(getActivity(), "You selected: all items", Toast.LENGTH_SHORT).show();
+                    if(firstLog) {
+                        Toast.makeText(getActivity(), "Filtering by: all items", Toast.LENGTH_SHORT).show();
+                        firstLog = false;
+                    }
                     setupList();
                 } else {
                     filterList(spinner.getSelectedItem().toString());
+                    Toast.makeText(getActivity(), spinner.getSelectedItem().toString() , Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -101,7 +106,6 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Activity activity = getActivity();
-                Toast.makeText(activity, "Replacing shop fragment with basket fragment!", Toast.LENGTH_SHORT).show();
 
                 try {
                     fragment = BasketFragment.class.newInstance();
