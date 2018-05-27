@@ -1,21 +1,35 @@
 package com.example.liamkenny.unionapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class UpcomingEventsFragment extends Fragment {
 
     private static final String TAG = "UpcomingEventsFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int DATASET_COUNT = 60;
+    private static final int DATASET_COUNT = 3;
 
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView mRecyclerView;
@@ -25,6 +39,12 @@ public class UpcomingEventsFragment extends Fragment {
     protected String[] mEventNames;
     protected String[] mEventInfo;
     protected String[] mEventDates;
+    private FirebaseAuth firebaseAuth;
+    private String userID;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+            .setTimestampsInSnapshotsEnabled(true)
+            .build();
 
 
     private enum LayoutManagerType {
@@ -34,7 +54,6 @@ public class UpcomingEventsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initDataset();
     }
 
     @Override
@@ -43,6 +62,16 @@ public class UpcomingEventsFragment extends Fragment {
         View rootView = inflater
                 .inflate(R.layout.fragment_upcoming_events, container, false);
         rootView.setTag(TAG);
+
+        //firebase user setup
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = firebaseAuth.getCurrentUser();
+        userID = fbUser.getUid();
+
+        //Setup Firestore settings
+        db.setFirestoreSettings(settings);
+
+        initDataset();
 
         // BEGIN_INCLUDE(initializeRecyclerView)
         mRecyclerView = rootView.findViewById(R.id.event_recycler_view);
@@ -92,11 +121,31 @@ public class UpcomingEventsFragment extends Fragment {
         mEventNames = new String[DATASET_COUNT];
         mEventInfo = new String[DATASET_COUNT];
         mEventDates = new String[DATASET_COUNT];
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            mEventNames[i] = "This is element #" + i;
-            mEventInfo[i] = "All the info we couldnt fit in the title for item " + i;
-            mEventDates[i] = i + "/01/2018";
-        }
+        db.collection("Event")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int i = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                String eventName = (String) document.getData().get("EventName");
+                                String eventInfo = (String) document.getData().get("Description");
+                                String eventDate = (String) document.getData().get("StartTime");
+                                mEventNames[i] = eventName;
+                                mEventInfo[i] = eventInfo;
+                                mEventDates[i] = eventDate;
+                                i++;
+                            }
+
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
 

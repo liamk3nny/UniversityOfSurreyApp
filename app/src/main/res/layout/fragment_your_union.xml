@@ -10,17 +10,19 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="20dp">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:src="@drawable/ic_location_city_black_24dp"/>
+                android:layout_height="200dp"
+                android:src="@drawable/saskia"/>
 
             <TextView
                 android:padding="20dp"

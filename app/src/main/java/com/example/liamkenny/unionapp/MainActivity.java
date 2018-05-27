@@ -39,7 +39,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,6 +52,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
+    private ArrayList<Event> events = new ArrayList<>();
+
     //Hamburger Menu items
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -86,9 +92,39 @@ public class MainActivity extends AppCompatActivity {
         //Setup Firestore settings
         db.setFirestoreSettings(settings);
 
-        //getStudentDoc();
+        //getEvents();
 
         setupView();
+    }
+
+    private void getEvents() {
+        events.clear();
+        db.collection("Event")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                String eventName = (String) document.getData().get("EventName");
+                                String eventInfo = (String) document.getData().get("Description");
+                                String socID = (String) document.getData().get("SocID");
+                                String startTime = (String) document.getData().get("StartTime");
+                                String endTime = (String) document.getData().get("EndTime");
+                                String location = (String) document.getData().get("Location");
+                                Event event = new Event(eventName, eventInfo, socID, startTime, endTime, location);
+                                events.add(event);
+
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     /*
@@ -333,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
         });
         alert.show();
     }
-    
+
     private void unCheckAllMenuItems(@NonNull final Menu menu) {
         int size = menu.size();
         for (int i = 0; i < size; i++) {
