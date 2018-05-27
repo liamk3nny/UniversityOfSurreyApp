@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +26,16 @@ import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentMethodToken;
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.TransactionInfo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BasketFragment extends Fragment {
 
@@ -50,11 +57,14 @@ public class BasketFragment extends Fragment {
     protected BasketItemAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     private Button checkoutButton;
+    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
-
+    private String userID;
+    private String email;
+    private String username;
 
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
@@ -82,11 +92,43 @@ public class BasketFragment extends Fragment {
         totalPriceView = rootView.findViewById(R.id.TotalPriceTV);
         // BEGIN_INCLUDE(initializeRecyclerView)
         mRecyclerView = rootView.findViewById(R.id.basketRecycler);
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = firebaseAuth.getCurrentUser();
+        userID = fbUser.getUid();
+
+        DocumentReference docRef = db.collection("Student").document(userID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Map userInfo = document.getData();
+                        username = userInfo.get("Forename") + " " + userInfo.get("Surname");
+                        email = userInfo.get("Username") + "@surrey.ac.uk";
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
 
         checkoutButton = rootView.findViewById(R.id.CHECKOUT_BUTTON);
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("user_email",email );
+                double time = System.currentTimeMillis();
+                db.collection("Order")
+                        .add(data);
+
                 requestPayment(view);
             }
         });
@@ -105,7 +147,7 @@ public class BasketFragment extends Fragment {
         mAdapter = new BasketItemAdapter(products, this);
         mRecyclerView.setAdapter(mAdapter);
         this.setNewPrice(basket.getTotalPrice());
-        mPaymentsClient = PaymentsUtil.createPaymentsClient(this.getActivity());
+        mPaymentsClient = PaymentsUtil.createPaymentsClient(getActivity());
         checkIsReadyToPay();
         return rootView;
     }
@@ -173,6 +215,7 @@ public class BasketFragment extends Fragment {
         // AutoResolveHelper to wait for the user interacting with it. Once completed,
         // onActivityResult will be called with the result.
         AutoResolveHelper.resolveTask(futurePaymentData, this.getActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+        checkoutButton.setClickable(true);
     }
     private void handlePaymentSuccess(PaymentData paymentData) {
         // PaymentMethodToken contains the payment information, as well as any additional

@@ -2,7 +2,6 @@ package com.example.liamkenny.unionapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                     Toast.makeText(context, "Product in DB", Toast.LENGTH_SHORT).show();
                     db.updateProductQuantity(prod, true);
                 } else if(!db.isProductInDB(prod)){
-                    Log.d("SHOP", "onLongClick: item added to DB ");
+
                     Toast.makeText(context, "Product added to DB", Toast.LENGTH_SHORT).show();
                     db.addProductToBasket(prod);
 
