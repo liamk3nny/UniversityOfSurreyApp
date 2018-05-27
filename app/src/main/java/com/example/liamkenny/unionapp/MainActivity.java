@@ -253,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.societies:
+                fragmentClass = SocietiesFragment.class;
                 break;
 
             case R.id.your_union:
