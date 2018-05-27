@@ -3,10 +3,10 @@
 
     <string-array name="filter_spinner_options">
         <item>All Products</item>
-        <item>Top</item>
-        <item>Hat</item>
+        <item>Tops</item>
+        <item>Hats</item>
         <item>Trousers</item>
-        <item>Accessory</item>
+        <item>Accessories</item>
 
     </string-array>
 

@@ -224,6 +224,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_layout);
+        fragment.onActivityResult(requestCode, resultCode, data);
+    }
+
     /*
         Finds which item of the hamburger menu has been selected and processes accordingly
      */

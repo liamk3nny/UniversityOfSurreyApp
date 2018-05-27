@@ -1,9 +1,9 @@
 package com.example.liamkenny.unionapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.lang.Object;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -120,13 +119,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupView(){
-        mFirstname = (EditText)findViewById(R.id.etFirstname);
-        mSurname = (EditText)findViewById(R.id.etSurname);
-        mUsername = (EditText)findViewById(R.id.etUsername);
-        mPassword1 = (EditText)findViewById(R.id.etPassword1);
-        mPassword2 = (EditText)findViewById(R.id.etPassword2);
-        mRegister = (Button)findViewById(R.id.btnRegister);
-        mAccount = (TextView)findViewById(R.id.tvAccount);
+        mFirstname = findViewById(R.id.etFirstname);
+        mSurname = findViewById(R.id.etSurname);
+        mUsername = findViewById(R.id.etUsername);
+        mPassword1 = findViewById(R.id.etPassword1);
+        mPassword2 = findViewById(R.id.etPassword2);
+        mRegister = findViewById(R.id.btnRegister);
+        mAccount = findViewById(R.id.tvAccount);
     }
 
     private boolean validate(){

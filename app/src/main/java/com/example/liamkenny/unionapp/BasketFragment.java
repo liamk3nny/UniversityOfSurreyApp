@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,14 +28,24 @@ import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentMethodToken;
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.TransactionInfo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BasketFragment extends Fragment {
 
-    private  TextView totalPriceView;
+    private TextView totalPriceView;
     private dbHelper database;
     private Basket basket;
     private ArrayList<Basket_Product> products;
@@ -50,11 +63,16 @@ public class BasketFragment extends Fragment {
     protected BasketItemAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     private Button checkoutButton;
+    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
-
+    private String userID;
+    private String email;
+    private String username;
+    private Fragment fragment;
+    private TextView isEmpty;
 
     private enum LayoutManagerType {
         LINEAR_LAYOUT_MANAGER
@@ -66,8 +84,6 @@ public class BasketFragment extends Fragment {
         db.setFirestoreSettings(settings);
 
 
-
-
     }
 
     @Override
@@ -77,17 +93,49 @@ public class BasketFragment extends Fragment {
                 .inflate(R.layout.fragment_basket, container, false);
         rootView.setTag(TAG);
 
-
+        isEmpty = rootView.findViewById(R.id.ISBASKETEMPTY);
 
         totalPriceView = rootView.findViewById(R.id.TotalPriceTV);
         // BEGIN_INCLUDE(initializeRecyclerView)
         mRecyclerView = rootView.findViewById(R.id.basketRecycler);
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser fbUser = firebaseAuth.getCurrentUser();
+        userID = fbUser.getUid();
+
+        DocumentReference docRef = db.collection("Student").document(userID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Map userInfo = document.getData();
+                        username = userInfo.get("Forename") + " " + userInfo.get("Surname");
+                        email = userInfo.get("Username") + "@surrey.ac.uk";
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
 
         checkoutButton = rootView.findViewById(R.id.CHECKOUT_BUTTON);
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestPayment(view);
+
+                if (basket.getBasket_Items().isEmpty()) {
+                    Toast.makeText(getActivity(), "Your Basket is currently empty", Toast.LENGTH_LONG).show();
+                } else {
+                    requestPayment(view);
+                }
+
+
             }
         });
 
@@ -101,11 +149,17 @@ public class BasketFragment extends Fragment {
 
         database = dbHelper.getInstance(getActivity());
         basket = database.extractBasketFromDB();
+
+        if (basket.getBasket_Items().isEmpty()) {
+            isEmpty.setVisibility(View.VISIBLE);
+        } else {
+            isEmpty.setVisibility(View.GONE);
+        }
         products = basket.getBasket_Items();
         mAdapter = new BasketItemAdapter(products, this);
         mRecyclerView.setAdapter(mAdapter);
         this.setNewPrice(basket.getTotalPrice());
-        mPaymentsClient = PaymentsUtil.createPaymentsClient(this.getActivity());
+        mPaymentsClient = PaymentsUtil.createPaymentsClient(getActivity());
         checkIsReadyToPay();
         return rootView;
     }
@@ -119,7 +173,12 @@ public class BasketFragment extends Fragment {
                     public void onComplete(Task<Boolean> task) {
                         try {
                             boolean result = task.getResult(ApiException.class);
-                            Log.d(TAG, "onComplete: IS READY TO PAY");
+                            if (result) {
+                                checkoutButton.setText("Pay with GooglePay");
+                            } else {
+                                checkoutButton.setText("GooglePay unavailable");
+                            }
+
 
                         } catch (ApiException exception) {
                             // Process error
@@ -131,7 +190,7 @@ public class BasketFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult: STAGE GOT HERE");
+
         switch (requestCode) {
             case LOAD_PAYMENT_DATA_REQUEST_CODE:
                 switch (resultCode) {
@@ -161,25 +220,27 @@ public class BasketFragment extends Fragment {
 
         // The price provided to the API should include taxes and shipping.
         // This price is not displayed to the user.
-        totalPrice = (long)basket.getTotalPrice() * 1000000;
-        String price = PaymentsUtil.microsToString(totalPrice*1000000);
+        totalPrice = (long) basket.getTotalPrice() * 1000000;
+        String price = PaymentsUtil.microsToString(totalPrice * 1000000);
 
         TransactionInfo transaction = PaymentsUtil.createTransaction(price);
         PaymentDataRequest request = PaymentsUtil.createPaymentDataRequest(transaction);
         Task<PaymentData> futurePaymentData = mPaymentsClient.loadPaymentData(request);
-        Log.d(TAG, "GOT TO STAGE 1: ");
+
 
         // Since loadPaymentData may show the UI asking the user to select a payment method, we use
         // AutoResolveHelper to wait for the user interacting with it. Once completed,
         // onActivityResult will be called with the result.
         AutoResolveHelper.resolveTask(futurePaymentData, this.getActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+        checkoutButton.setClickable(true);
     }
+
     private void handlePaymentSuccess(PaymentData paymentData) {
         // PaymentMethodToken contains the payment information, as well as any additional
         // requested information, such as billing and shipping address.
         //
 
-        Log.d(TAG, "handlePaymentSuccess: GOT TO STAGE 2");
+
         // Refer to your processor's documentation on how to proceed from here.
         PaymentMethodToken token = paymentData.getPaymentMethodToken();
 
@@ -189,10 +250,21 @@ public class BasketFragment extends Fragment {
             // If the gateway is set to example, no payment information is returned - instead, the
             // token will only consist of "examplePaymentMethodToken".
             if (token.getToken().equals("examplePaymentMethodToken")) {
+                String prods = "    ";
+                for (Basket_Product p : basket.getBasket_Items()) {
+                    prods += "\n    ";
+                    prods += p.getProduct().getProductName() + ": £" + round(p.getProduct().getProductPrice(), 2);
+                }
+
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                        .setTitle("Warning")
-                        .setMessage("Gateway name set to \"example\" - please modify " +
-                                "Constants.java and replace it with your own gateway.")
+                        .setTitle("Thank you for your order")
+                        .setMessage("Payment processed: " + "\n"
+                                + prods
+                                + "\n"
+                                + "\n   Total Price: £" + this.round(basket.getTotalPrice(), 2) + "\n"
+
+
+                        )
                         .setPositiveButton("OK", null)
                         .create();
                 alertDialog.show();
@@ -200,9 +272,46 @@ public class BasketFragment extends Fragment {
 
             String billingName = paymentData.getCardInfo().getBillingAddress().getName();
             Toast.makeText(getActivity(), getString(R.string.payments_show_name, billingName), Toast.LENGTH_LONG).show();
+            String timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+            HashMap<String, Object> data = new HashMap<>();
+            HashMap<String, Object> prods = new HashMap<>();
+            int counter = 1;
+            for (Basket_Product b : basket.getBasket_Items()) {
+                prods.put("Product " + counter, b.getProduct().getProductName());
+                counter++;
+            }
+
+            data.put("user_email", email);
+            data.put("price", basket.getTotalPrice());
+            data.put("date", timeStamp);
+            data.put("items", prods);
+            data.put("payment_method", "GooglePay");
+
+            double time = System.currentTimeMillis();
+            db.collection("Order")
+                    .add(data);
 
             // Use token.getToken() to get the token string.
             Log.d("PaymentData", "PaymentMethodToken received");
+            Activity activity = getActivity();
+
+            basket.clearBasket();
+            database.clearAll();
+
+            try {
+                fragment = ShopFragment.class.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //uncheckItems();
+            FragmentManager fragmentManager = getFragmentManager();
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.fragment_layout, fragment);
+            fragmentTransaction.addToBackStack(fragment.toString());
+            fragmentTransaction.commit();
+
         }
     }
 
@@ -213,6 +322,7 @@ public class BasketFragment extends Fragment {
         // WalletConstants.ERROR_CODE_* constants.
         Log.w("loadPaymentData failed", String.format("Error code: %d", statusCode));
     }
+
     public void setRecyclerViewLayoutManager() {
         int scrollPosition = 0;
 
@@ -235,20 +345,27 @@ public class BasketFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public  void setNewPrice(double price){
+    public void setNewPrice(double price) {
+        price = this.round(price, 2);
         totalPriceView.setText("£" + String.valueOf(price));
     }
 
-    public void updateBasket(Basket b){
+    public void updateBasket(Basket b) {
         this.basket = b;
+        if (basket.getBasket_Items().isEmpty()) {
+            isEmpty.setVisibility(View.VISIBLE);
+        } else {
+            isEmpty.setVisibility(View.GONE);
+        }
+
     }
 
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-
-
-
-
-
-
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
 }
