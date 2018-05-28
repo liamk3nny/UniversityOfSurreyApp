@@ -112,7 +112,7 @@ public class ShopFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //uncheckItems();
+
                 FragmentManager fragmentManager = getFragmentManager();
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

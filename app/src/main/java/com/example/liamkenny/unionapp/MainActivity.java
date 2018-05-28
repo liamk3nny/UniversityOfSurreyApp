@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
+
+
         //Hamburger menu items
         drawer = (NavigationView) findViewById(R.id.navigation_view);
         View headerView = drawer.getHeaderView(0);

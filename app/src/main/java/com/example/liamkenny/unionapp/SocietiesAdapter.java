@@ -10,11 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
 
-    private String[] mSocietiesNames;
-    private String[] mSocietiesInfo;
+    private ArrayList<String> mSocietiesNames;
+    private ArrayList<String> mSocietiesInfo;
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,7 +51,7 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
 
     }
 
-    public SocietiesAdapter(String[] societiesNames, String[] societiesInfo) {
+    public SocietiesAdapter(ArrayList<String> societiesNames, ArrayList<String> societiesInfo) {
         mSocietiesNames = societiesNames;
         mSocietiesInfo = societiesInfo;
         //msocietiesImage = societiesImage;
@@ -72,8 +74,8 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getsocietiesName().setText(mSocietiesNames[position]);
-        viewHolder.getsocietiesInfo().setText(mSocietiesInfo[position]);
+        viewHolder.getsocietiesName().setText(mSocietiesNames.get(position));
+        viewHolder.getsocietiesInfo().setText(mSocietiesInfo.get(position));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +89,6 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
 
 
     public int getItemCount() {
-        return mSocietiesNames.length;
+        return mSocietiesNames.size();
     }
 }

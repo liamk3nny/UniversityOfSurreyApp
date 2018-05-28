@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 
 public class SocietiesFragment extends Fragment {
     private static final String TAG = "societiesFragment";
@@ -30,8 +32,8 @@ public class SocietiesFragment extends Fragment {
     protected SocietiesAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    protected String[] mSocietyNames;
-    protected String[] mSocietyInfo;
+    protected ArrayList<String> mSocietyNames;
+    protected ArrayList<String> mSocietyInfo;
     private FirebaseAuth firebaseAuth;
     private String userID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -111,22 +113,20 @@ public class SocietiesFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mSocietyNames = new String[DATASET_COUNT];
-        mSocietyInfo = new String[DATASET_COUNT];
+        mSocietyNames = new ArrayList<>();
+        mSocietyInfo = new ArrayList<>();
         db.collection("Society")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 String societiesName = (String) document.getData().get("SocName");
                                 String societiesType = (String) document.getData().get("TypeOfSoc");
-                                mSocietyNames[i] = societiesName;
-                                mSocietyInfo[i] = societiesType;
-                                i++;
+                                mSocietyNames.add(societiesName);
+                                mSocietyInfo.add(societiesType);
                             }
 
                             mAdapter.notifyDataSetChanged();

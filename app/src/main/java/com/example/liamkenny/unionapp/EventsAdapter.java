@@ -1,5 +1,11 @@
 package com.example.liamkenny.unionapp;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
@@ -19,14 +25,21 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private ArrayList<String> mEventNames;
     private ArrayList<String> mEventInfo;
     private ArrayList<String> mEventDate;
+    private Fragment fragment;
+    private Activity activity;
+    private SupportFragment supportFragment;
+
     private ImageView mEventImage;
     private Context mContext;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView eventImage;
         private final TextView eventName;
         private final TextView eventInfo;
         private final TextView eventDate;
+
+
 
         public ViewHolder(View v) {
             super(v);
@@ -93,6 +106,22 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             public void onClick(View view) {
                 Toast.makeText(mContext, "Selected item " + position , Toast.LENGTH_SHORT).show();
 
+
+                try {
+                    fragment = EventInfoFragment.class.newInstance();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+               /* FragmentManager fragmentManager = fragment.getFragmentManager();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+                fragmentTransaction.replace(R.id.fragment_layout, fragment);
+                fragmentTransaction.addToBackStack(fragment.toString());
+                fragmentTransaction.commit();
+*/
             }
         });
     }
