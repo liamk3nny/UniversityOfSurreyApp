@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -118,7 +120,7 @@ public class ProfileFragment extends Fragment {
         postCodeText = view.findViewById(R.id.profile_postcode);
         saveButton = view.findViewById(R.id.profile_save);
 
-        DocumentReference docRef = db.collection("Student").document(userID);
+        final DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -149,6 +151,30 @@ public class ProfileFragment extends Fragment {
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
+            }
+        });
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                docRef.update(
+                        "Forename", firstnameText.getText().toString().trim(),
+                        "Surname", surnameText.getText().toString().trim(),
+                        "AcademicYear", yearText.getText().toString().trim(),
+                        "Username", usernameText.getText().toString().trim(),
+                        "URN", urnText.getText().toString().trim(),
+                        "ContactNumber", phoneText.getText().toString().trim(),
+                        "Housenumber", houseText.getText().toString().trim(),
+                        "PostCode", postCodeText.getText().toString().trim()
+
+                ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            //Toast.makeText(this, "Information has been update sucessfully", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText()
+                        }
+                    }
+                });
             }
         });
 
