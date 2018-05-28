@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
+    private ArrayList<String> mSocietiesDescription;
+    private ArrayList<String> mSocietiesType;
 
     private ArrayList<String> mSocietiesNames;
     private ArrayList<String> mSocietiesInfo;
@@ -29,6 +31,9 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
         private final ImageView societiesImage;
         private final TextView societiesName;
         private final TextView societiesInfo;
+        private final TextView societiesDescription;
+        private final TextView societiesType;
+
 
         public ViewHolder(View v) {
             super(v);
@@ -42,6 +47,8 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
             societiesName = v.findViewById(R.id.societies_name);
             societiesInfo = v.findViewById(R.id.societies_info);
             societiesImage = v.findViewById(R.id.societies_photo);
+            societiesDescription = v.findViewById(R.id.societies_description);
+            societiesType = v.findViewById(R.id.societies_type);
 
         }
 
@@ -53,13 +60,20 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
             return societiesInfo;
         }
 
-        public ImageView getsocietiesImage() { return  societiesImage; }
+        public TextView getsocietiesDescription() { return  societiesDescription; }
+
+        public TextView getsocietiesType() { return societiesType;}
+
+
 
     }
 
-    public SocietiesAdapter(ArrayList<String> societiesNames, ArrayList<String> societiesInfo) {
+
+    public SocietiesAdapter(ArrayList<String> societiesNames, ArrayList<String> societiesInfo, ArrayList<String> societiesType, ArrayList<String> socitiesDescription) {
         mSocietiesNames = societiesNames;
         mSocietiesInfo = societiesInfo;
+        mSocietiesType = societiesType;
+        mSocietiesDescription = socitiesDescription;
         //msocietiesImage = societiesImage;
     }
 
@@ -81,6 +95,8 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
         // with that element
         viewHolder.getsocietiesName().setText(mSocietiesNames.get(position));
         viewHolder.getsocietiesInfo().setText(mSocietiesInfo.get(position));
+        viewHolder.getsocietiesDescription().setText(mSocietiesDescription.get(position));
+        viewHolder.getsocietiesType().setText(mSocietiesType.get(position));
 
         final int mItemSelected = viewHolder.getAdapterPosition();
 

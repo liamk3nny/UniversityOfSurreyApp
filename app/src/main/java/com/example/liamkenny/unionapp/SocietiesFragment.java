@@ -33,13 +33,15 @@ public class SocietiesFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
 
     protected ArrayList<String> mSocietyNames;
-    protected ArrayList<String> mSocietyInfo;
+    protected ArrayList<String> mSocietyType;
     private FirebaseAuth firebaseAuth;
     private String userID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
+    private ArrayList<String> mSocietyInfo;
+    private ArrayList<String> mSocietyDescription;
 
 
     private enum LayoutManagerType {
@@ -78,7 +80,7 @@ public class SocietiesFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new SocietiesAdapter(mSocietyNames, mSocietyInfo);
+        mAdapter = new SocietiesAdapter(mSocietyNames, mSocietyInfo, mSocietyType, mSocietyDescription);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -114,7 +116,9 @@ public class SocietiesFragment extends Fragment {
      */
     private void initDataset() {
         mSocietyNames = new ArrayList<>();
+        mSocietyType = new ArrayList<>();
         mSocietyInfo = new ArrayList<>();
+        mSocietyDescription = new ArrayList<>();
         db.collection("Society")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -125,8 +129,12 @@ public class SocietiesFragment extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 String societiesName = (String) document.getData().get("SocName");
                                 String societiesType = (String) document.getData().get("TypeOfSoc");
+                                String societiesInfo = (String) document.getData().get("Info");
+                                String societiesDescription = (String) document.getData().get("Desc");
                                 mSocietyNames.add(societiesName);
-                                mSocietyInfo.add(societiesType);
+                                mSocietyType.add(societiesType);
+                                mSocietyInfo.add(societiesInfo);
+                                mSocietyDescription.add(societiesDescription);
                             }
 
                             mAdapter.notifyDataSetChanged();

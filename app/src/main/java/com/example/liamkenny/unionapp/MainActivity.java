@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupDrawerContent(drawer);
-        
+
         userRef = storageReference.child(userID+ ".jpg");
         final long ONE_MEGABYTE = 1024 * 1024;
         userRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
