@@ -232,24 +232,27 @@ public class ProfileFragment extends Fragment {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bundle extras = data.getExtras();
-        Bitmap image = (Bitmap) extras.get("data");
-        //sets imageview as the bitmap
-        imageView.setImageBitmap(image);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageData = baos.toByteArray();
+        if (resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap image = (Bitmap) extras.get("data");
+            //sets imageview as the bitmap
+            imageView.setImageBitmap(image);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageData = baos.toByteArray();
 
-        userRef = storageReference.child(userID+ ".jpg");
-        UploadTask uploadTask = userRef.putBytes(imageData);
-        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(getContext(), "Image has been successfully uploaded", Toast.LENGTH_SHORT).show();
+            userRef = storageReference.child(userID+ ".jpg");
+            UploadTask uploadTask = userRef.putBytes(imageData);
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(getContext(), "Image has been successfully uploaded", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
     }
 
