@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         private TextView name;
         private TextView price;
         private TextView category;
+        private ImageButton addItem;
 
 
         public MyViewHolder(View view) {
@@ -26,7 +28,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
             name = view.findViewById(R.id.product_name);
             price = view.findViewById(R.id.product_price);
             category = view.findViewById(R.id.product_cat);
-
+            addItem = view.findViewById(R.id.shop_item_add);
 
         }
     }
@@ -48,13 +50,12 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
         holder.name.setText(prod.getProductName());
         holder.price.setText("£" + Double.toString(prod.getProductPrice()));
         holder.category.setText(prod.getProductType());
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+        holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-
-
+            public void onClick(View v) {
                 dbHelper db = dbHelper.getInstance(context);
-                
+
                 if (db.isProductInDB(prod)) {
                     Toast.makeText(context, "Added " + prod.getProductName() + " to basket", Toast.LENGTH_SHORT).show();
                     db.updateProductQuantity(prod, true);
@@ -64,10 +65,18 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.MyView
                     db.addProductToBasket(prod);
 
                 }
+            }
+        });
+        /*holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+
 
                 return true;
             }
-        });
+        });*/
 
     }
 
