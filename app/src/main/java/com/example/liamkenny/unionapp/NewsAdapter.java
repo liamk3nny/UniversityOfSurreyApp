@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
 
-    private String[] mNewsNames;
-    private String[] mNewsInfo;
+    private ArrayList<String> mNewsNames;
+    private ArrayList<String> mNewsInfo;
+    private ImageView mNewsImage;
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,10 +52,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
 
     }
 
-    public NewsAdapter(String[] newsNames, String[] newsInfo) {
+    public NewsAdapter(ArrayList<String> newsNames, ArrayList<String> newsInfo, ImageView newsImage) {
         mNewsNames = newsNames;
         mNewsInfo = newsInfo;
-        //mNewsImage = newsImage;
+        mNewsImage = newsImage;
     }
 
 
@@ -72,8 +75,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getnewsName().setText(mNewsNames[position]);
-        viewHolder.getnewsInfo().setText(mNewsInfo[position]);
+        viewHolder.getnewsName().setText(mNewsNames.get(position));
+        viewHolder.getnewsInfo().setText(mNewsInfo.get(position));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +90,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
 
 
     public int getItemCount() {
-        return mNewsNames.length;
+        return mNewsNames.size();
     }
 }

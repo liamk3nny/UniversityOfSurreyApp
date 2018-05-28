@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 
 public class NewsFragment extends Fragment {
@@ -30,9 +33,10 @@ public class NewsFragment extends Fragment {
     protected NewsAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    protected String[] mNewsNames;
-    protected String[] mNewsInfo;
-    protected String[] mnewsDates;
+    protected ArrayList<String> mNewsNames;
+    protected ArrayList<String> mNewsInfo;
+    protected ArrayList<String> mnewsDates;
+    protected ImageView mNewsImage;
     private FirebaseAuth firebaseAuth;
     private String userID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -77,7 +81,7 @@ public class NewsFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new NewsAdapter(mNewsNames, mNewsInfo);
+        mAdapter = new NewsAdapter(mNewsNames, mNewsInfo, mNewsImage);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -112,22 +116,20 @@ public class NewsFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mNewsNames = new String[DATASET_COUNT];
-        mNewsInfo = new String[DATASET_COUNT];
+        mNewsNames = new ArrayList<>();
+        mNewsInfo = new ArrayList<>();
         db.collection("News")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 String newsTitle = (String) document.getData().get("Title");
                                 String newsSubTitle = (String) document.getData().get("SubTitle");
-                                mNewsNames[i] = newsTitle;
-                                mNewsInfo[i] = newsSubTitle;;
-                                i++;
+                                mNewsNames.add(newsTitle);
+                                mNewsInfo.add(newsSubTitle);
                             }
 
                             mAdapter.notifyDataSetChanged();
