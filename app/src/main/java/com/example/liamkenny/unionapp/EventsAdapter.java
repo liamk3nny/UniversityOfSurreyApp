@@ -1,6 +1,7 @@
 package com.example.liamkenny.unionapp;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     private ArrayList<String> mEventNames;
     private ArrayList<String> mEventInfo;
     private ArrayList<String> mEventDate;
+    private ImageView mEventImage;
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,11 +60,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
     }
 
-    public EventsAdapter(ArrayList<String> eventNames, ArrayList<String> eventInfo, ArrayList<String> eventDates) {
+    public EventsAdapter(ArrayList<String> eventNames, ArrayList<String> eventInfo, ArrayList<String> eventDates, ImageView eventImage) {
         mEventNames = eventNames;
         mEventInfo = eventInfo;
         mEventDate = eventDates;
-        //mEventImage = eventImage;
+        mEventImage = eventImage;
     }
 
 

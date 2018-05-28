@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +42,7 @@ public class UpcomingEventsFragment extends Fragment {
     protected ArrayList<String> mEventNames;
     protected ArrayList<String> mEventInfo;
     protected ArrayList<String> mEventDates;
+    protected ImageView mEventImage;
     private FirebaseAuth firebaseAuth;
     private String userID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -85,7 +87,7 @@ public class UpcomingEventsFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new EventsAdapter(mEventNames, mEventInfo, mEventDates);
+        mAdapter = new EventsAdapter(mEventNames, mEventInfo, mEventDates, mEventImage);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
