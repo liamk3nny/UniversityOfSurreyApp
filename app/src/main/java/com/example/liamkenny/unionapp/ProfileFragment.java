@@ -1,6 +1,8 @@
 package com.example.liamkenny.unionapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 
@@ -41,6 +46,7 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int CAMERA_PIC_REQUEST = 133;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -53,15 +59,17 @@ public class ProfileFragment extends Fragment {
             .setTimestampsInSnapshotsEnabled(true)
             .build();
     private String userID;
-    private TextView firstnameText;
-    private TextView surnameText;
-    private TextView yearText;
-    private TextView urnText;
-    private TextView usernameText;
-    private TextView phoneText;
-    private TextView houseText;
-    private TextView postCodeText;
+    private EditText firstnameText;
+    private EditText surnameText;
+    private EditText yearText;
+    private EditText urnText;
+    private EditText usernameText;
+    private EditText phoneText;
+    private EditText houseText;
+    private EditText postCodeText;
     private Button saveButton;
+    private TextView changeProfile;
+    private ImageView imageView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -110,6 +118,16 @@ public class ProfileFragment extends Fragment {
         //Setup Firestore settings
         db.setFirestoreSettings(settings);
 
+        changeProfile = view.findViewById(R.id.profile_change_image);
+
+        changeProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+            }
+        });
+
         firstnameText = view.findViewById(R.id.profile_firstname);
         surnameText = view.findViewById(R.id.profile_surname);
         yearText = view.findViewById(R.id.profile_year);
@@ -119,6 +137,8 @@ public class ProfileFragment extends Fragment {
         houseText = view.findViewById(R.id.profile_house);
         postCodeText = view.findViewById(R.id.profile_postcode);
         saveButton = view.findViewById(R.id.profile_save);
+
+        imageView = view.findViewById(R.id.imageView);
 
         final DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -179,6 +199,14 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bundle extras = data.getExtras();
+        Bitmap image = (Bitmap) extras.get("data");
+        //sets imageview as the bitmap
+        imageView.setImageBitmap(image);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
