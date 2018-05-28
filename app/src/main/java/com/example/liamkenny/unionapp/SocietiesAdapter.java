@@ -74,7 +74,7 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
 
 
 
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         Log.d(TAG, "Element " + position + " set.");
 
         // Get element from your dataset at this position and replace the contents of the view
@@ -89,7 +89,7 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
             public void onClick(View view) {
                 Toast.makeText(mContext, "Selected item " + position , Toast.LENGTH_SHORT).show();
 
-               /* try {
+                /*try {
                     fragment = SocietiesInfoFragment.class.newInstance();
 
                 } catch (Exception e) {

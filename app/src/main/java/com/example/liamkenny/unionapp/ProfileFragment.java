@@ -3,6 +3,7 @@ package com.example.liamkenny.unionapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +29,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
@@ -58,6 +65,10 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
+
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = storage.getReference();
+    private StorageReference userRef;
     private String userID;
     private EditText firstnameText;
     private EditText surnameText;
@@ -114,9 +125,13 @@ public class ProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser fbUser = firebaseAuth.getCurrentUser();
         userID = fbUser.getUid();
+        userRef = storageReference.child(userID+ ".jpg");
 
         //Setup Firestore settings
         db.setFirestoreSettings(settings);
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+
 
         changeProfile = view.findViewById(R.id.profile_change_image);
 
@@ -139,6 +154,20 @@ public class ProfileFragment extends Fragment {
         saveButton = view.findViewById(R.id.profile_save);
 
         imageView = view.findViewById(R.id.imageView);
+
+        userRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
         final DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -207,6 +236,21 @@ public class ProfileFragment extends Fragment {
         Bitmap image = (Bitmap) extras.get("data");
         //sets imageview as the bitmap
         imageView.setImageBitmap(image);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageData = baos.toByteArray();
+
+        userRef = storageReference.child(userID+ ".jpg");
+        UploadTask uploadTask = userRef.putBytes(imageData);
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(getContext(), "Image has been successfully uploaded", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

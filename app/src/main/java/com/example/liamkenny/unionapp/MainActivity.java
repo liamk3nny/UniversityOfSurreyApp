@@ -2,6 +2,8 @@ package com.example.liamkenny.unionapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +45,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -68,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = storage.getReference();
+    private StorageReference userRef;
     private String userID;
     private Map userInfo;
 
@@ -154,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         View headerView = drawer.getHeaderView(0);
         final TextView nav_username = (TextView) headerView.findViewById(R.id.user_name);
         final TextView nav_email = (TextView) headerView.findViewById(R.id.user_email);
+        final ImageView profilePic = (ImageView) headerView.findViewById(R.id.imgProfile);
 
         DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -184,9 +194,22 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupDrawerContent(drawer);
-
-        profileTab = (LinearLayout) findViewById(R.id.profile_layout);
-        profilePic = (ImageView) findViewById(R.id.imgProfile);
+        
+        userRef = storageReference.child(userID+ ".jpg");
+        final long ONE_MEGABYTE = 1024 * 1024;
+        userRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profilePic.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
