@@ -170,7 +170,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            //Toast.makeText(this, "Information has been update sucessfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Information has been update sucessfully", Toast.LENGTH_SHORT).show();
                             //Toast.makeText()
                         }
                     }
