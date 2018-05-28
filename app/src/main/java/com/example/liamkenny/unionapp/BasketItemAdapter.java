@@ -60,7 +60,7 @@ public class BasketItemAdapter extends RecyclerView.Adapter<BasketItemAdapter.My
         holder.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context, "Removed " + prod.getProduct().getProductName() + " from basket.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Removed " + prod.getProduct().getProductName() + " from basket.", Toast.LENGTH_SHORT).show();add
                 basket.removeItem(position);
                 basket_items = basket.getBasket_Items();
                 basket.recalculateTotalPrice();

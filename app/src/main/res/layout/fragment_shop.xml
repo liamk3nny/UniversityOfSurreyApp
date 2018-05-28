@@ -19,7 +19,7 @@
             android:paddingBottom="40dp"
             android:text="USSU SHOP"
             android:textColor="@color/white"
-            android:textSize="45sp"
+            android:textSize="40sp"
             android:textStyle="italic|bold" />
 
         <ImageButton
@@ -47,9 +47,9 @@
             android:layout_below="@+id/basketButton"
             android:layout_margin="5dp"
             android:layout_marginTop="50dp"
-            android:text="Welcome to the USSU shop. Please hold click on an item to add it to your basket. When ready to pay please click on the basket button."
+            android:text="Welcome to the USSU shop. When ready to pay please click on the basket button."
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_marginBottom="20dp"
             android:textStyle="italic" />
 
@@ -59,7 +59,7 @@
             android:layout_below="@id/shopIntro"
             android:id="@+id/FilterLabel"
             android:text="Filter by Category"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:layout_marginLeft="30dp"/>
