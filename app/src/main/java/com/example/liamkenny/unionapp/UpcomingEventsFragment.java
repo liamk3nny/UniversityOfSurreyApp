@@ -22,23 +22,25 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class UpcomingEventsFragment extends Fragment {
 
     private static final String TAG = "UpcomingEventsFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int DATASET_COUNT = 3;
+    private static final int DATASET_COUNT = 6;
 
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView mRecyclerView;
     protected EventsAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    protected String[] mEventNames;
-    protected String[] mEventInfo;
-    protected String[] mEventDates;
+    protected ArrayList<String> mEventNames;
+    protected ArrayList<String> mEventInfo;
+    protected ArrayList<String> mEventDates;
     private FirebaseAuth firebaseAuth;
     private String userID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -118,25 +120,23 @@ public class UpcomingEventsFragment extends Fragment {
      * from a local content provider or remote server.
      */
     private void initDataset() {
-        mEventNames = new String[DATASET_COUNT];
-        mEventInfo = new String[DATASET_COUNT];
-        mEventDates = new String[DATASET_COUNT];
+        mEventNames = new ArrayList<>();
+        mEventInfo = new ArrayList<>();
+        mEventDates = new ArrayList<>();
         db.collection("Event")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 String eventName = (String) document.getData().get("EventName");
                                 String eventInfo = (String) document.getData().get("Description");
                                 String eventDate = (String) document.getData().get("StartTime");
-                                mEventNames[i] = eventName;
-                                mEventInfo[i] = eventInfo;
-                                mEventDates[i] = eventDate;
-                                i++;
+                                mEventNames.add(eventName);
+                                mEventInfo.add(eventInfo);
+                                mEventDates.add(eventDate);
                             }
 
                             mAdapter.notifyDataSetChanged();

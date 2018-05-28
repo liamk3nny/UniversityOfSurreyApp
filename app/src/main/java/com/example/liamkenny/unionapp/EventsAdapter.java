@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
 
-    private String[] mEventNames;
-    private String[] mEventInfo;
-    private String[] mEventDate;
+    private ArrayList<String> mEventNames;
+    private ArrayList<String> mEventInfo;
+    private ArrayList<String> mEventDate;
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,7 +58,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
     }
 
-    public EventsAdapter(String[] eventNames, String[] eventInfo, String[] eventDates) {
+    public EventsAdapter(ArrayList<String> eventNames, ArrayList<String> eventInfo, ArrayList<String> eventDates) {
         mEventNames = eventNames;
         mEventInfo = eventInfo;
         mEventDate = eventDates;
@@ -80,9 +82,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getEventName().setText(mEventNames[position]);
-        viewHolder.getEventInfo().setText(mEventInfo[position]);
-        viewHolder.getEventDate().setText(mEventDate [position]);
+        viewHolder.getEventName().setText(mEventNames.get(position));
+        viewHolder.getEventInfo().setText(mEventInfo.get(position));
+        viewHolder.getEventDate().setText(mEventDate.get(position));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +98,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
 
     public int getItemCount() {
-        return mEventNames.length;
+        return mEventNames.size();
     }
 }
