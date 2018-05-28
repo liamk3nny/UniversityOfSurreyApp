@@ -1,6 +1,7 @@
 package com.example.liamkenny.unionapp;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +23,7 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
     private ArrayList<String> mSocietiesInfo;
     private Context mContext;
     private Fragment fragment;
+    private Bundle mBundle;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView societiesImage;
@@ -80,13 +82,14 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
         viewHolder.getsocietiesName().setText(mSocietiesNames.get(position));
         viewHolder.getsocietiesInfo().setText(mSocietiesInfo.get(position));
 
+        final int mItemSelected = viewHolder.getAdapterPosition();
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "Selected item " + position , Toast.LENGTH_SHORT).show();
 
-                try {
+               /* try {
                     fragment = SocietiesInfoFragment.class.newInstance();
 
                 } catch (Exception e) {
@@ -100,7 +103,15 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
                 fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
                 fragmentTransaction.replace(R.id.fragment_layout, fragment);
                 fragmentTransaction.addToBackStack(fragment.toString());
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
+/*
+
+                fragment = new SocietiesInfoFragment();
+                mBundle = new Bundle();
+                mBundle.putParcelable("item_selected_key", mItemSelected);
+                fragment.setArguments(mBundle);
+                switchContent(R.id.frag1, fragment);
+*/
 
 
             }
@@ -108,6 +119,16 @@ public class SocietiesAdapter extends RecyclerView.Adapter<SocietiesAdapter.View
     }
 
 
+    public void switchContent(int id, Fragment fragment) {
+        if (mContext == null)
+            return;
+        if (mContext instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) mContext;
+            Fragment frag = fragment;
+            mainActivity.switchContent(id, frag);
+        }
+
+    }
 
     public int getItemCount() {
         return mSocietiesNames.size();

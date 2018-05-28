@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
@@ -17,13 +19,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
 
     private ArrayList<String> mNewsNames;
     private ArrayList<String> mNewsInfo;
-    private ImageView mNewsImage;
+    private ArrayList<String> mNewsArticle;
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView newsImage;
+
         private final TextView newsName;
         private final TextView newsInfo;
+        private final TextView newsArticle;
 
         public ViewHolder(View v) {
             super(v);
@@ -36,7 +39,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
             });
             newsName = v.findViewById(R.id.news_name);
             newsInfo = v.findViewById(R.id.news_info);
-            newsImage = v.findViewById(R.id.news_photo);
+            newsArticle = v.findViewById(R.id.news_article);
+
 
         }
 
@@ -48,14 +52,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
             return newsInfo;
         }
 
-        public ImageView getnewsImage() { return  newsImage; }
-
+        public TextView getNewsArticle() {
+            return newsArticle;
+        }
     }
 
-    public NewsAdapter(ArrayList<String> newsNames, ArrayList<String> newsInfo, ImageView newsImage) {
+    public NewsAdapter(ArrayList<String> newsNames, ArrayList<String> newsInfo, ArrayList<String> newsArticle) {
         mNewsNames = newsNames;
         mNewsInfo = newsInfo;
-        mNewsImage = newsImage;
+        mNewsArticle = newsArticle;
+
     }
 
 
@@ -77,11 +83,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
         // with that element
         viewHolder.getnewsName().setText(mNewsNames.get(position));
         viewHolder.getnewsInfo().setText(mNewsInfo.get(position));
+        viewHolder.getNewsArticle().setText(mNewsArticle.get(position));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Selected item " + position , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Selected item " + position , Toast.LENGTH_SHORT).show();
 
             }
         });

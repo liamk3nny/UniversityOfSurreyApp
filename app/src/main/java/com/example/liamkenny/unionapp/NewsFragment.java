@@ -35,7 +35,7 @@ public class NewsFragment extends Fragment {
 
     protected ArrayList<String> mNewsNames;
     protected ArrayList<String> mNewsInfo;
-    protected ArrayList<String> mnewsDates;
+    protected ArrayList<String> mNewsArticle;
     protected ImageView mNewsImage;
     private FirebaseAuth firebaseAuth;
     private String userID;
@@ -43,6 +43,7 @@ public class NewsFragment extends Fragment {
     private FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .build();
+
 
 
     private enum LayoutManagerType {
@@ -81,7 +82,7 @@ public class NewsFragment extends Fragment {
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new NewsAdapter(mNewsNames, mNewsInfo, mNewsImage);
+        mAdapter = new NewsAdapter(mNewsNames, mNewsInfo, mNewsArticle);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -118,6 +119,7 @@ public class NewsFragment extends Fragment {
     private void initDataset() {
         mNewsNames = new ArrayList<>();
         mNewsInfo = new ArrayList<>();
+        mNewsArticle = new ArrayList<>();
         db.collection("News")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -128,8 +130,10 @@ public class NewsFragment extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 String newsTitle = (String) document.getData().get("Title");
                                 String newsSubTitle = (String) document.getData().get("SubTitle");
+                                String newsArticle = (String) document.getData().get("Article");
                                 mNewsNames.add(newsTitle);
                                 mNewsInfo.add(newsSubTitle);
+                                mNewsArticle.add(newsArticle);
                             }
 
                             mAdapter.notifyDataSetChanged();

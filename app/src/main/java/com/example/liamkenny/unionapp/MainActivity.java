@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Adding Fragments to the tabs
-        adapter.addFragment(new UpcomingEventsFragment(), "Upcoming Events");
+        //adapter.addFragment(new UpcomingEventsFragment(), "Upcoming Events");
         adapter.addFragment(new NewsFragment(), "News");
 
         //Setting up adapter
@@ -252,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.events:
+                fragmentClass = UpcomingEventsFragment.class;
                 break;
 
             case R.id.societies:
@@ -393,4 +394,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void switchContent(int id, Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(id, fragment, fragment.toString());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,8 +51,15 @@ public class ProfileFragment extends Fragment {
             .setTimestampsInSnapshotsEnabled(true)
             .build();
     private String userID;
-    private TextView nav_username;
-    private TextView nav_email;
+    private TextView firstnameText;
+    private TextView surnameText;
+    private TextView yearText;
+    private TextView urnText;
+    private TextView usernameText;
+    private TextView phoneText;
+    private TextView houseText;
+    private TextView postCodeText;
+    private Button saveButton;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -100,8 +108,15 @@ public class ProfileFragment extends Fragment {
         //Setup Firestore settings
         db.setFirestoreSettings(settings);
 
-        nav_username = view.findViewById(R.id.profile_email);
-        nav_email = view.findViewById(R.id.profile_name);
+        firstnameText = view.findViewById(R.id.profile_firstname);
+        surnameText = view.findViewById(R.id.profile_surname);
+        yearText = view.findViewById(R.id.profile_year);
+        usernameText = view.findViewById(R.id.profile_username);
+        urnText = view.findViewById(R.id.profile_urn);
+        phoneText = view.findViewById(R.id.profile_phone);
+        houseText = view.findViewById(R.id.profile_house);
+        postCodeText = view.findViewById(R.id.profile_postcode);
+        saveButton = view.findViewById(R.id.profile_save);
 
         DocumentReference docRef = db.collection("Student").document(userID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -112,10 +127,22 @@ public class ProfileFragment extends Fragment {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         Map userInfo = document.getData();
-                        String username = userInfo.get("Forename") + " " + userInfo.get("Surname");
-                        String email = userInfo.get("Username") + "@surrey.ac.uk";
-                        nav_username.setText(username);
-                        nav_email.setText(email);
+                        String firstname = (String) userInfo.get("Forename");
+                        String surname = (String) userInfo.get("Surname");
+                        String year = (String) userInfo.get("AcademicYear");
+                        String username = (String) userInfo.get("Username");
+                        String urn = (String) userInfo.get("URN");
+                        String phone = (String) userInfo.get("ContactNumber");
+                        String house = (String) userInfo.get("Housenumber");
+                        String postCode = (String) userInfo.get("PostCode");
+                        firstnameText.setText(firstname);
+                        surnameText.setText(surname);
+                        yearText.setText(year);
+                        usernameText.setText(username);
+                        urnText.setText(urn);
+                        phoneText.setText(phone);
+                        houseText.setText(house);
+                        postCodeText.setText(postCode);
                     } else {
                         Log.d(TAG, "No such document");
                     }

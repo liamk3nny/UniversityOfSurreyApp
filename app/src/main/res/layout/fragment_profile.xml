@@ -4,76 +4,158 @@
     android:layout_height="match_parent"
     tools:context="com.example.liamkenny.unionapp.ProfileFragment">
 
-    <RelativeLayout
+
+    <LinearLayout
+        android:id="@+id/profile_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
-        
-        <LinearLayout
-            android:background="@color/colorPrimary"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-            android:id="@+id/profile_header">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@color/colorPrimary"
-                    android:src="@drawable/ic_settings_black_24dp"
-                    android:tint="@color/offWhite" />
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="15dp"
-                    android:src="@drawable/user"
-                    android:id="@+id/imageView" />
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
 
-            </RelativeLayout>
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/profile_name"
-                android:textColor="@color/offWhite"
-                android:textStyle="bold"
-                android:text="@string/name"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:src="@drawable/user" />
 
             <TextView
+                android:id="@+id/profile_change_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/profile_type"
-                android:text="Student"
-                android:textColor="@color/offWhite"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="5dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/profile_email"
-                android:text="@string/example_email"
-                android:textColor="@color/offWhite"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
+                android:layout_below="@id/imageView"
+                android:layout_centerHorizontal="true"
+                android:padding="5dp"
+                android:text="Change profile picture"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="@string/firstname"
+
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="@string/surname"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="AcademicYear"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="Username"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="URN"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_urn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="Contact Number"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="House Number"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_house"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="3dp"
+            android:text="PostCode"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/profile_postcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/profile_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>
